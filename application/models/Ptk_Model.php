@@ -15,6 +15,12 @@ class Ptk_Model extends CI_Model
         $this->db->update('ptk', ['avatar' => $file_name]); // Ganti 'ptk' dengan nama tabel yang sesuai
     }
 
+    public function update_sk_pengangkatan($id_guru, $file_name)
+    {
+        $this->db->where('id_guru', $id_guru);
+        $this->db->update('ptk', ['sk_pengangkatan' => $file_name]); // Ganti 'ptk' dengan nama tabel yang sesuai
+    }
+
 
 
     public function simpan_ptk_from_excel(
@@ -89,6 +95,12 @@ class Ptk_Model extends CI_Model
         $this->db->join('kelas', 'FIND_IN_SET(kelas.no_kelas, ptk.kode_kelas) > 0', 'LEFT');
         $this->db->where('ptk.id_guru', $ptk_id);
         return $this->db->get()->row_array();
+    }
+    public function update_guru($guru_id, $data)
+    {
+        $this->db->where('id_guru', $guru_id);
+        $this->db->update('ptk', $data);
+        return $this->db->affected_rows() > 0;
     }
 
     public function cek_nip($nip)

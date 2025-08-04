@@ -46,7 +46,54 @@ class Absensi_Model extends CI_Model
             AND DATE(absensionline.timestamp) = ' . $this->db->escape($startDateFormatted), 'left');
 
         // Filter berdasarkan kelas jika ada
-        if ($kelas_id !== null) {
+        if ($kelas_id !== null && $kelas_id != "") {
+            $this->db->where('kelas.id_kelas', $kelas_id);
+        }
+
+        // Urutkan hasil
+        $this->db->order_by('kelas.nama_kelas', 'ASC');
+        $this->db->order_by('siswa.no_absen', 'ASC');
+
+        // Eksekusi query
+        $query = $this->db->get();
+
+        // Debug: Tampilkan query untuk pemecahan masalah
+        // Uncomment the line below if you want to see the generated SQL query for debugging
+        // echo $this->db->last_query();
+
+        // Kembalikan hasil dalam bentuk array
+        return $query->result_array();
+    }
+
+    public function get_absensionline_bulanan($month, $year, $kelas_id)
+    {
+         // Format tanggal sesuai dengan format yang digunakan di database
+        // $startDateFormatted = date('Y-m-d', strtotime($start_date));
+
+        // Pilih kolom yang akan ditampilkan
+        $this->db->select('
+            siswa.id_siswa, 
+            siswa.nama_siswa, 
+            siswa.jeniskelamin, 
+            siswa.nis, 
+            siswa.no_absen, 
+            kelas.nama_kelas, 
+            kelas.kode_tingkat, 
+            COALESCE(absensionline.absen, "Tidak Masuk") AS absen, 
+            absensionline.timestamp
+        ');
+        $this->db->from('siswa');
+
+        // Bergabung dengan tabel kelas dan absensionline
+        $this->db->join('kelas', 'siswa.kode_kelas = kelas.no_kelas', 'left');
+        $this->db->join('absensionline', 'siswa.id_siswa = absensionline.id_siswa 
+            AND MONTH(absensionline.timestamp) = ' . $this->db->escape($month) . ' AND YEAR(absensionline.timestamp) = ' . $this->db->escape($year), 'left');
+
+        // Filter berdasarkan kelas jika ada
+        // gaiso langsung update
+
+
+        if ($kelas_id !== null && $kelas_id != "") {
             $this->db->where('kelas.id_kelas', $kelas_id);
         }
 

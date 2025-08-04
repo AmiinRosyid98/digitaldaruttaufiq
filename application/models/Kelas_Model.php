@@ -43,6 +43,22 @@ class Kelas_Model extends CI_Model
         return $this->db->get($this->_tablekelas)->row();
     }
 
+    public function cekwali($id_guru, $kelas_id = null){
+        $cekwali = $this->db->select('*')
+                            ->from($this->_tablekelas)
+                            ->where('id_guru', $id_guru)->get();
+        if($kelas_id != null){
+            $cekwali = $this->db->select('*')
+                            ->from($this->_tablekelas)
+                            ->where('id_guru', $id_guru)
+                            ->where('id_kelas != ', $kelas_id)
+
+                            ->get();
+        }
+        return $cekwali;
+
+    }
+
 
 
 

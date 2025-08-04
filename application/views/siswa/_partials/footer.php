@@ -122,6 +122,14 @@
             $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
         })
     });
+
+    $('.btn-bayar-langsung').click(function(e){
+        Swal.fire({
+          icon: "info",
+          title: "Bayar langsung",
+          text: "Pembayaran langsung bisa dilakukan di kantor",
+        });
+    })
 </script>
 
 

@@ -34,6 +34,11 @@
 <script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
 <script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
 
+
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+
 <!-- Bootstrap Colorpicker -->
 <script src="<?= base_url('/assets/admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js'); ?>"></script>
 
@@ -171,7 +176,7 @@
 </script>
 <!-- table -->
 <script>
-    $(function() {
+    $(document).ready(function() {
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": true,
@@ -186,6 +191,26 @@
                     "searchable": true
                 } // Mengaktifkan pencarian hanya pada kolom dengan indeks 1 (kolom nama)
             ]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+        $("#example12").DataTable({
+            "responsive": false, // Pertahankan ini false agar scrollX dan fixedColumns bekerja optimal
+            "lengthChange": true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "autoWidth": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [1],
+                "searchable": true
+            }],
+            "scrollX": true, // Tetap aktifkan scroll horizontal
+            "fixedColumns": {
+                leftColumns: 2 // Membekukan 3 kolom pertama (No, Nama, NIP/No Pegawai)
+                // rightColumns: 0 // Jika ada kolom di kanan yang ingin dibekukan, set di sini
+            }
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
@@ -517,6 +542,49 @@
     }
 </script>
 <script>
+    // cek simpan kelas 
+
+    let allowSubmit = false;
+
+    $('#btn_simpan_kelas').on('click', function(e) {
+        const form = $('#simpan_kelas');
+        // alert(allowSubmit);
+
+        if (!allowSubmit) {
+            e.preventDefault(); // cegah default hanya jika belum boleh submit
+            e.stopPropagation(); // ← opsional tapi aman
+
+            $.ajax({
+                url: 'ceksimpan_kelas',
+                type: 'POST',
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response === 'tidak_ada') {
+                        allowSubmit = true;
+                        setTimeout(function () {
+                            form.submit();
+                        }, 500);
+                        // form.submit(); // akan lewat karena flag true
+                    } else {
+                        showToast('error', 'Wali Kelas sudah di setting di kelas lain');
+                        return false
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert('Terjadi kesalahan saat menyimpan data.');
+                    return false
+                }
+            });
+        } else {
+            // Reset flag agar tidak submit dua kali kalau user klik lagi
+            allowSubmit = false;
+        }
+    });
+
+
+
     //Fungsi Edit Kelas
     function editKelas(kelasId) {
         $.ajax({
@@ -531,6 +599,7 @@
                 $('#editNamaKelas').val(response.kelas.nama_kelas);
                 $('#editKodeTingkat').val(response.kelas.kode_tingkat);
                 $('#editKodeKelas').val(response.kelas.no_kelas);
+                $('#edit_id_guru').val(response.kelas.id_guru);
                 $('#editKelasModal').modal('show');
             },
             error: function() {
@@ -550,6 +619,12 @@
                 data: $(this).serialize(),
                 dataType: 'json',
                 success: function(response) {
+                    if(response=="ada"){
+                        
+                        showToast('error', 'Wali Kelas sudah di setting di kelas lain');
+                        return false
+                    
+                    }
                     if (response.success) {
                         $('#editKelasModal').modal('hide');
                         showToast('success', 'Data Kelas berhasil diperbarui.');

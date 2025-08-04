@@ -34,6 +34,17 @@
         </li>
 
         <li class="nav-item">
+            <a href="<?php echo base_url() ?>siswa/raport" class="nav-link <?php if ($this->uri->segment(2) == "raport") {
+                                                                                echo "active";
+                                                                            } ?>" href="<?= base_url('raport') ?>">
+                <i class="nav-icon fas fa-book"></i>  
+                <p>
+                    Raport
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="<?php echo base_url() ?>siswa/ebook" class="nav-link <?php if ($this->uri->segment(2) == "ebook") {
                                                                                 echo "active";
                                                                             } ?>" href="<?= base_url('ebook') ?>">

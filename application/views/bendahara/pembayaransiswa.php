@@ -107,7 +107,7 @@
                                         <th>NIS</th>
                                         <th>Nama Siswa</th>
                                         <th>POS Tagihan</th>
-                                        <th>Tipe</th>
+                                        <th>Nominal Dibayar</th>
                                         <th>Tahun Pelajaran</th>
                                         <th>Catat</th>
                                     </tr>
@@ -125,13 +125,29 @@
                                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                             <span class="visually-hidden"><?= !empty($siswa_item['nama_pos']) ? ($siswa_item['nama_pos']) : 'Nihil' ?></span>
                                                         </span>
-                                                    </button>
+                                                    </button><br>
+                                                    <span style="font-weight: normal;">Tipe : <?= $siswa_item['nama_tipepembayaran'] ?> </span>
                                                 </td>
-                                                <td class="text-center"><?= $siswa_item['nama_tipepembayaran'] ?></td>
+                                                <td class="text-center">Rp. <?= number_format((int) $siswa_item['total_bayar'], 0, ',', '.') ?><br>
+                                                    <?php if ((int)$siswa_item['total_bayar'] <= 0) { ?>
+                                                        <span class=" translate-middle badge rounded-pill bg-secondary"><i class="fas fa-circle-exclamation"></i>&nbsp;Belum Bayar</span>
+                                                    <?php } else if ((int)$siswa_item['total_bayar'] > 0)  { ?>
+                                                        <?php if ((int)$siswa_item['total_bayar'] < (int)$siswa_item['jumlah_tarif']) {?>
+                                                            <span class=" translate-middle badge rounded-pill bg-warning"><i class="fas fa-hourglass-half"></i>&nbsp;Dibayar Sebagian</span>
+                                                        <?php } else { ?>
+                                                            <span class=" translate-middle badge rounded-pill bg-success"><i class="fas fa-circle-check"></i>&nbsp;Lunas</span>
+                                                            
+                                                        <?php } // sdsds ?>
+
+                                                    <?php } else { ?>
+                                                    <?php }  ?>
+                                                </td>
                                                 <td class="text-center"><?= $siswa_item['tahun_pelajaran'] ?></td>
                                                 <td class="text-center">
-                                                    <?php if ($siswa_item['jumlah_tarif']): ?>
-                                                        <button class="btn btn-success btn-sm open-modal" data-toggle="modal" data-target="#tambahPembayaran" data-id_siswa="<?php echo $siswa_item['id_siswa']; ?>" data-id_tipepembayaran="<?php echo $siswa_item['id_tipepembayaran']; ?>" data-id_pos="<?php echo $siswa_item['id_pos']; ?>"  data-nama_siswa="<?php echo $siswa_item['nama_siswa']; ?>" data-nama_pos="<?php echo $siswa_item['nama_pos']; ?>" data-id_pembayaran="<?php echo $siswa_item['id_pembayaran']; ?>" data-jumlah_tarif="<?php echo $siswa_item['jumlah_tarif']; ?>" data-kode_tahunpelajaran="<?php echo $siswa_item['kode_tahunpelajaran']; ?>" data-kode_kelas="<?php echo $siswa_item['kode_kelas']; ?>" data-tahun_pelajaran="<?php echo $siswa_item['tahun_pelajaran']; ?>" data-nama_kelas="<?php echo $siswa_item['nama_kelas']; ?>">Catat Pembayaran</button>
+                                                    <?php if ((int)$siswa_item['total_bayar'] < $siswa_item['jumlah_tarif']): ?>
+                                                        <button class="btn btn-success btn-sm open-modal" data-toggle="modal" data-target="#tambahPembayaran" data-id_siswa="<?php echo $siswa_item['id_siswa']; ?>" data-id_tipepembayaran="<?php echo $siswa_item['id_tipepembayaran']; ?>" data-id_pos="<?php echo $siswa_item['id_pos']; ?>"  data-nama_siswa="<?php echo $siswa_item['nama_siswa']; ?>" data-nama_pos="<?php echo $siswa_item['nama_pos']; ?>" data-id_pembayaran="<?php echo $siswa_item['id_pembayaran']; ?>" data-jumlah_tarif="<?php echo $siswa_item['jumlah_tarif']; ?>" data-kode_tahunpelajaran="<?php echo $siswa_item['kode_tahunpelajaran']; ?>" data-kode_kelas="<?php echo $siswa_item['kode_kelas']; ?>" data-tahun_pelajaran="<?php echo $siswa_item['tahun_pelajaran']; ?>" data-nama_kelas="<?php echo $siswa_item['nama_kelas']; ?>"
+                                                        data-tagihan = "<?= ((int)$siswa_item['jumlah_tarif'] - (int) $siswa_item['total_bayar']) ?>"
+                                                            >Catat Pembayaran</button>
                                                     <?php else: ?>
                                                         <button class="btn btn-dark btn-sm" disabled>Catat Pembayaran</button>
                                                     <?php endif; ?>
@@ -210,7 +226,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Simpan Pembayaran</button>
+                            <button type="submit" class="btn btn-primary btn-simpan">Simpan Pembayaran</button>
                         </div>
                     </form>
                 </div>
@@ -223,6 +239,19 @@
 
         <!-- Scripts -->
         <script>
+
+            $('.btn-simpan').click(function(e){
+                // e.preventDefault();
+                let val = $('#jumlah_pembayaran').val()
+                let tagihan = $(this).attr("tagihan");
+                let angka = parseInt(
+                  val.replace(/[^\d]/g, '') // Hapus semua karakter selain angka
+                );
+                if(parseInt(angka) > parseInt(tagihan)) {
+                    showToast('error', 'Maksimal tagihannya adalah = '+tagihan);
+                    return false //sdsds
+                }
+            })
             // Fungsi Mengambil ID id_jenispembayaran
             $(document).ready(function() {
                 $('.open-modal').click(function() {
@@ -237,6 +266,7 @@
                     var kode_kelas          = $(this).data('kode_kelas');
                     var tahun_pelajaran     = $(this).data('tahun_pelajaran');
                     var nama_kelas          = $(this).data('nama_kelas');
+                    var tagihan          = $(this).data('tagihan');
                     $('#id_siswa').val(id_siswa);
                     $('#id_tipepembayaran').val(id_tipepembayaran);
                     $('#id_pos').val(id_pos);
@@ -248,6 +278,7 @@
                     $('#kode_kelas').val(kode_kelas);
                     $('#tahun_pelajaran').val(tahun_pelajaran);
                     $('#nama_kelas').val(nama_kelas);
+                    $('.btn-simpan').attr("tagihan", tagihan)
                     var formAction = "<?php echo site_url('bendahara/datakeuangan/simpan_tarifpembayaran'); ?>";
                     $('#tambahTarifpembayaran form').attr('action', formAction);
                 });

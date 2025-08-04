@@ -8,6 +8,7 @@ class Rekapabsensisiswa extends CI_Controller
         $this->load->model('Auth_admin');
         $this->load->model('Admin');
         $this->load->model('Absensi_Model');
+        $this->load->model('Kelas_Model');
         $this->load->library('pagination');
         // Pemeriksaan apakah pengguna telah login
         $current_user = $this->Auth_admin->current_user();
@@ -56,6 +57,44 @@ class Rekapabsensisiswa extends CI_Controller
 
         // Load view dengan data yang sudah disiapkan
         $this->load->view('admin/absensi/rekapabsensisiswa', $data);
+    }
+
+    public function rekapbulansiswa()
+    {
+        // var_dump("tes");die;
+        // Ambil logo dan data profil sekolah
+        $logo_data              = $this->Admin->get_logo();
+        $data['logo']           = $logo_data['logo'];
+        $data['current_user']   = $this->Auth_admin->current_user();
+        $data['profilsekolah']  = $this->Admin->get_profilsekolah_data();
+
+        // Ambil nilai dari form jika ada
+        $month = $this->input->get('month');
+        $year = $this->input->get('year');
+        $kelas_id = $this->input->get('kelas');
+
+
+        // Set default bulan dan tahun jika kosong
+        if (empty($month) || empty($year)) {
+            $month = date('m');
+            $year = date('Y');
+        }
+
+        // Panggil model untuk mengambil data absensi bulanan
+        $data['absensibulan'] = $this->Absensi_Model->get_absensionline_bulanan($month, $year, $kelas_id);
+
+        $data['list_kelas'] = $this->Absensi_Model->get_list_kelas();
+
+        $data['selected_kelas'] = $kelas_id;
+
+
+
+        // Simpan nilai bulan dan tahun untuk dikirim kembali ke form
+        $data['month'] = $month;
+        $data['year'] = $year;
+
+        // Load view dengan data yang sudah disiapkan
+        $this->load->view('admin/absensi/rekapbulansiswa', $data);
     }
 
     public function laporanrekapharian()
@@ -205,6 +244,7 @@ class Rekapabsensisiswa extends CI_Controller
             'lembaga'           => $lembaga,
             'settingabsensi'    => $settingabsensi,
             'data'              => $data,
+            'kelas'             => $this->Kelas_Model->get_kelas_by_id($kelas_id),
             'start_date'        => $start_date,
         ], true);
 
@@ -221,6 +261,9 @@ class Rekapabsensisiswa extends CI_Controller
         $pdf->writeHTML($pdfContent, true, false, true, false, '');
         $pdf->Output('laporan_absensi_online.pdf', 'I');
     }
+
+
+    
 
 
 

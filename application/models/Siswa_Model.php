@@ -37,6 +37,27 @@ class Siswa_Model extends CI_Model
         return $query->result_array();
     }
 
+    public function get_siswa_by_wali($id_guru)
+    {
+
+        $kelas = $this->db->select('no_kelas')
+                        ->from('kelas')
+                        ->where('id_guru', $id_guru)
+                        ->get();
+        $kelas = $kelas->row();
+        if($kelas){
+            $id_kelas = $kelas->no_kelas;
+            $this->db->select('siswa.*, kelas.*');
+            $this->db->from('siswa');
+            $this->db->join('kelas', 'siswa.kode_kelas = kelas.no_kelas');
+            $this->db->where('kelas.no_kelas', $id_kelas);
+            
+            return $this->db->get()->result_array();
+        } else {
+            return [];
+        }
+    }
+
 
 
     public function simpan_siswa($data)

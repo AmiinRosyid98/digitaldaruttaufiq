@@ -37,54 +37,45 @@
                 <div class="content">
 
                     <div class="card">
-                        <div class="card">
+                        <div class="card" style="margin-bottom: 0px;">
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fa-brands fa-cloudflare"></i> Absensi Online </h3>
                             </div>
                             <div class="card-body">
                                 <div class="row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <form method="get" action="<?php echo base_url('admin/rekapabsensisiswa/laporanrekapharian'); ?>">
                                             <div class="row">
-                                                <div class="col-sm-5 text-end">
-                                                    <label for="start_date" class="col-form-label">Mulai Tanggal:</label>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="month">Mulai Tanggal:</label>
+                                                        <input type="date" id="start_date" name="start_date" class="form-control" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-7">
-                                                    <input type="date" id="start_date" name="start_date" class="form-control" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="kelas" >Kelas:</label>
+                                                        <select name="kelas" id="kelas" class="form-control">
+                                                            <option value="">Pilih Kelas</option>
+                                                            <?php foreach ($list_kelas as $kelas) : ?>
+                                                                <option value="<?php echo $kelas['id_kelas']; ?>" <?php echo isset($selected_kelas) && $selected_kelas == $kelas['id_kelas'] ? 'selected' : ''; ?>><?php echo $kelas['nama_kelas']; ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-sm-5 text-end">
-                                                    <label for="kelas" class="col-form-label">Kelas:</label>
-                                                </div>
-                                                <div class="col-sm-7">
-                                                    <select name="kelas" id="kelas" class="form-control">
-                                                        <option value="">Pilih Kelas</option>
-                                                        <?php foreach ($list_kelas as $kelas) : ?>
-                                                            <option value="<?php echo $kelas['id_kelas']; ?>" <?php echo isset($selected_kelas) && $selected_kelas == $kelas['id_kelas'] ? 'selected' : ''; ?>><?php echo $kelas['nama_kelas']; ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-2">
-                                                <div class="col-sm-12 text-end">
+                                                <div class="col-md-4" style="padding-top: 31px;">
                                                     <button type="submit" class="btn btn-primary">Tampilkan</button>
+                                                    <?php if (!empty($start_date) && !empty($selected_kelas)) : ?>
+                                                                <a href="<?php echo base_url('admin/rekapabsensisiswa/laporan_absensi_siswa?start_date=' . $start_date . '&kelas=' . $selected_kelas); ?>" target="_blank" class="btn btn-secondary">
+                                                                    Cetak PDF
+                                                                </a>
+                                                    <?php endif; ?>
+
                                                 </div>
                                             </div>
                                         </form>
-
-                                        <?php if (!empty($start_date) && !empty($selected_kelas)) : ?>
-                                            <div class="row mt-2">
-                                                <div class="col-sm-12 text-end">
-                                                    <a href="<?php echo base_url('admin/rekapabsensisiswa/laporan_absensi_siswa?start_date=' . $start_date . '&kelas=' . $selected_kelas); ?>" target="_blank" class="btn btn-secondary">
-                                                        Cetak PDF
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="table-responsive">
                                             <table id="example1" class="table table-bordered table-striped">
                                                 <thead>

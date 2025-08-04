@@ -12,6 +12,7 @@ class Masterdata extends CI_Controller
         $this->load->model('Tahunpelajaran_Model');
         $this->load->model('Mapel_Model');
         $this->load->model('auth_admin');
+        $this->load->model('Ptk_Model');
         $this->load->library('pagination');
         $this->load->library('upload');
 
@@ -271,6 +272,7 @@ class Masterdata extends CI_Controller
         $data['kelas']          = $this->Kelas_Model->get_kelas('nama_kelas');
         $data['tingkat']        = $this->Tingkat_Model->get_tingkat();
         $data['profilsekolah']  = $this->admin->get_profilsekolah_data();
+        $data['ptk']            = $this->Ptk_Model->get_ptk();
         $this->load->view('admin/kelas', $data);
     }
 
@@ -282,11 +284,23 @@ class Masterdata extends CI_Controller
         echo json_encode(array('kelas' => $kelas));
     }
 
+    public function ceksimpan_kelas(){
+        $id_guru = $_POST['id_guru'];
+
+        $cekwali = $this->Kelas_Model->cekwali($id_guru);
+        if($cekwali->num_rows() > 0){
+            echo json_encode("ada");
+        } else {
+            echo json_encode("tidak_ada");
+        }
+    }
+
     public function simpan_kelas()
     {
         $nama_kelas   = $this->input->post('nama_kelas');
         $no_kelas     = $this->input->post('no_kelas');
         $kode_tingkat = $this->input->post('kode_tingkat');
+        $id_guru = $this->input->post('id_guru');
 
         $existing_kelas = $this->Kelas_Model->get_kelas_by_no($no_kelas);
         if ($existing_kelas) {
@@ -297,7 +311,8 @@ class Masterdata extends CI_Controller
         $insert_data = array(
             'nama_kelas'    => $nama_kelas,
             'no_kelas'      => $no_kelas,
-            'kode_tingkat'  => $kode_tingkat
+            'kode_tingkat'  => $kode_tingkat,
+            'id_guru'  => $id_guru,
         );
         $insert_result = $this->Kelas_Model->simpan_kelas($insert_data);
         if ($insert_result) {
@@ -310,10 +325,22 @@ class Masterdata extends CI_Controller
 
     public function update_kelas()
     {
+
+        $id_guru = $_POST['edit_id_guru'];
+
         $kelas_id   = $this->input->post('editKelasId');
+
+        $cekwali = $this->Kelas_Model->cekwali($id_guru, $kelas_id);
+        if($cekwali->num_rows() > 0){
+            echo json_encode("ada");die;
+        } else {
+            // echo json_encode("tidak_ada");
+        }
+
         $data       = array(
             'nama_kelas'          => $this->input->post('editNamaKelas'),
-            'kode_tingkat'        => $this->input->post('editKodeTingkat')
+            'kode_tingkat'        => $this->input->post('editKodeTingkat'),
+            'id_guru'        => $this->input->post('edit_id_guru')
         );
         $result = $this->Kelas_Model->update_kelas($kelas_id, $data);
 
@@ -367,12 +394,31 @@ class Masterdata extends CI_Controller
         $this->load->view('admin/mapel', $data);
     }
 
+    //FUNGSI Metode
+    public function metodepembayaran()
+    {
+        $logo_data              = $this->admin->get_logo();
+        $data['logo']           = $logo_data['logo'];
+        $data['current_user']   = $this->auth_admin->current_user();
+        $data['profilsekolah']  = $this->admin->get_profilsekolah_data();
+        $data['metode']          = $this->admin->get_metode_pembayaran();
+        $data['kategori']          = $this->admin->get_kategori_metode_pembayaran();
+
+        $this->load->view('admin/metodepembayaran', $data);
+    }
+
 
     public function get_mapel()
     {
         $mapel_id   = $this->input->get('mapel_id');
         $mapel      = $this->Mapel_Model->get_mapel_by_id($mapel_id);
         echo json_encode(array('mapel' => $mapel));
+    }
+    public function get_metode()
+    {
+        $metodeid   = $this->input->get('metodeid');
+        $metode      = $this->admin->get_metode_by_id($metodeid);
+        echo json_encode(array('metode' => $metode));
     }
 
 
@@ -405,6 +451,64 @@ class Masterdata extends CI_Controller
         redirect('admin/masterdata/mapel');
     }
 
+    public function simpan_metode()
+    {
+        $nama         = $this->input->post('nama');
+        $kode     = $this->input->post('kode');
+        $id_kategori       = $this->input->post('id_kategori');
+        $min       = $this->input->post('min');
+        $max       = $this->input->post('max');
+        $biayaadmin       = $this->input->post('biayaadmin');
+        $status       = $this->input->post('status');
+        // $logo       = $this->input->post('logo');
+
+        $upload_path = './upload/payment/';
+
+
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'jpg|png|JPG|PNG'; // Izinkan file pdf dan word
+        $config['max_size'] = 70240; // Ukuran maksimal dalam KB
+        $config['file_name'] = 'LogoPayment' . date('YmdHis');
+
+        // Inisialisasi konfigurasi upload
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('logo')) {
+            // Jika gagal unggah file
+            $error = $this->upload->display_errors();
+            $this->session->set_flashdata('error_message', 'Gagal mengunggah file: ' . $error);
+            redirect('admin/masterdata/metodepembayaran');
+            
+        } else {
+            // Jika berhasil unggah file
+            $upload_data = $this->upload->data();
+            $file_path = $upload_data['file_name'];
+
+            $insert_data = array(
+                'nama'        => $nama,
+                'kode'    => $kode,
+                'id_kategori'      => $id_kategori,
+                'min'      => $min,
+                'max'      => $max,
+                'biayaadmin'      => $biayaadmin,
+                'status'      => $status,
+                'logo'      => $file_path,
+            );
+
+            $insert_result = $this->admin->simpan_metode($insert_data);
+            if ($insert_result) {
+                $this->session->set_flashdata('success_message', 'Data Metode berhasil disimpan.');
+            } else {
+                $this->session->set_flashdata('error_message', 'Gagal menyimpan data Metode.');
+            }
+
+            redirect('admin/masterdata/metodepembayaran');
+        }
+
+        
+    }
+
 
 
 
@@ -429,6 +533,95 @@ class Masterdata extends CI_Controller
         }
     }
 
+    public function update_metode()
+    {
+        $metodeid   = $this->input->post('editMetodeId');
+
+        $nama         = $this->input->post('editNama');
+        $kode     = $this->input->post('editKode');
+        $id_kategori       = $this->input->post('editId_kategori');
+        $min       = $this->input->post('editMin');
+        $max       = $this->input->post('editMax');
+        $biayaadmin       = $this->input->post('editBiayaadmin');
+        $status       = $this->input->post('editStatus');
+
+        if (isset($_FILES['editlogo']) && $_FILES['editlogo']['error'] !== UPLOAD_ERR_NO_FILE) {
+
+            $upload_path = './upload/payment/';
+
+
+            $config['upload_path'] = $upload_path;
+            $config['allowed_types'] = 'jpg|png|JPG|PNG'; // Izinkan file pdf dan word
+            $config['max_size'] = 70240; // Ukuran maksimal dalam KB
+            $config['file_name'] = 'LogoPayment' . date('YmdHis');
+
+            // Inisialisasi konfigurasi upload
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('editlogo')) {
+                // Jika gagal unggah file
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('error_message', 'Gagal mengunggah file: ' . $error);
+                // redirect('admin/masterdata/metodepembayaran');
+                echo json_encode(array('success' => false,'eror'=>$error));
+
+                
+            } else {
+                // Jika berhasil unggah file
+                $upload_data = $this->upload->data();
+                $file_path = $upload_data['file_name'];
+
+                $data = array(
+                    'nama'        => $nama,
+                    'kode'    => $kode,
+                    'id_kategori'      => $id_kategori,
+                    'min'      => $min,
+                    'max'      => $max,
+                    'biayaadmin'      => $biayaadmin,
+                    'status'      => $status,
+                    'logo'      => $file_path,
+                );
+
+                $result = $this->admin->update_metode($metodeid, $data);
+                if ($result) {
+                    $this->session->set_flashdata('success_message', 'Data Metode berhasil disimpan.');
+                    echo json_encode(array('success' => true));
+
+                } else {
+                    $this->session->set_flashdata('error_message', 'Gagal menyimpan data Metode.');
+                    echo json_encode(array('success' => false));
+
+                }
+
+                // redirect('admin/masterdata/metodepembayaran');
+            }
+        } else{
+            $data       = array(
+                'nama'        => $nama,
+                'kode'    => $kode,
+                'id_kategori'      => $id_kategori,
+                'min'      => $min,
+                'max'      => $max,
+                'biayaadmin'      => $biayaadmin,
+                'status'      => $status,
+
+            );
+            $result = $this->admin->update_metode($metodeid, $data);
+
+            if ($result) {
+                $this->session->set_flashdata('success_message', 'Data Metode berhasil diperbarui.');
+                echo json_encode(array('success' => true));
+            } else {
+                $error = $this->db->error();
+                $this->session->set_flashdata('error_message', 'Tidak ada perubahan Metode');
+                echo json_encode(array('success' => false, "error"=>$error));
+            }
+        }
+
+        
+    }
+
 
 
     public function hapus_mapel($mapel_id)
@@ -440,5 +633,16 @@ class Masterdata extends CI_Controller
             $this->session->set_flashdata('error_message', 'Gagal menghapus Mapel.');
         }
         redirect('admin/masterdata/mapel');
+    }
+    public function hapus_metode($metodeid)
+    {
+        // sdfsdsd
+        $result = $this->admin->hapus_metode($metodeid);
+        if ($result) {
+            $this->session->set_flashdata('error_message', 'Metode berhasil dihapus.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Gagal menghapus Mapel.');
+        }
+        redirect('admin/masterdata/metodepembayaran');
     }
 }

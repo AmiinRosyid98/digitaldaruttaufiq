@@ -48,7 +48,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-10">
-                                        <h3 class="card-title"><i class="fa-solid fa-file-invoice"></i> Data Rekap History Pembayaran </h3>
+                                        <h3 class="card-title"><i class="fa-solid fa-file-invoice"></i> Data Rekap History Pembayaran</h3>
                                     </div>
                                     <div class="col-2 text-right">
                                         <!-- Tempat Kosong -->
@@ -58,36 +58,51 @@
 
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-9">
-
-                                    </div>
-                                    <div class="col-4 text-right">
+                                    
+                                    <div class="col-12 text-right">
                                         <!-- Dropdown untuk memilih kelas -->
-                                        <form class="form-inline" action="<?php echo site_url('bendahara/historypembayaran/cetak_laporankeuangan_by_kelas'); ?>" method="get">
-                                            <div class="form-group mb-0">
-                                                <select name="kelas" class="form-control">
-                                                    <?php foreach ($kelas as $row) : ?>
-                                                        <option value="<?php echo $row['no_kelas']; ?>"><?php echo $row['nama_kelas']; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
+                                        <form class="form-inline" action="<?php echo site_url('bendahara/historypembayaran/'); ?>" method="get">
+                                            <div class="col-lg-3">
+                                                 <div class="form-group mb-2">
+                                                    <select name="kelas" class="form-control" style="width:100%">
+                                                        <?php foreach ($kelas as $row) : ?>
+                                                            <option value="<?php echo $row['no_kelas']; ?>" <?= isset($_GET['kelas']) ? ($_GET['kelas'] == $row['no_kelas']) ? "selected" : "" : "" ?> ><?php echo $row['nama_kelas']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="form-group mb-0 ml-1">
-                                                <select name="poskeuangan" class="form-control">
-                                                    <?php foreach ($poskeuangan as $row) : ?>
-                                                        <option value="<?php echo $row['id_pos']; ?>"><?php echo $row['nama_pos']; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
+                                            <div class="col-lg-3">
+                                                <div class="form-group mb-2 ">
+                                                    <select name="poskeuangan" class="form-control" style="width:100%">
+                                                        <?php foreach ($poskeuangan as $row) : ?>
+                                                            <option value="<?php echo $row['id_pos']; ?>" <?= isset($_GET['poskeuangan']) ? ($_GET['poskeuangan'] == $row['id_pos']) ? "selected" : "" : "" ?> ><?php echo $row['nama_pos']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="form-group mb-0 ml-1">
-                                                <select name="tahunpelajaran" class="form-control">
-                                                    <?php foreach ($tahunpelajaran as $row) : ?>
-                                                        <option value="<?php echo $row['id_tahunpelajaran']; ?>"><?php echo $row['tahun_pelajaran']; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
+                                            <div class="col-lg-3">
+                                                <div class="form-group mb-2 ">
+                                                    <select name="tahunpelajaran" class="form-control" style="width:100%">
+                                                        <?php foreach ($tahunpelajaran as $row) : ?>
+                                                            <option value="<?php echo $row['id_tahunpelajaran']; ?>" <?= isset($_GET['tahunpelajaran']) ? ($_GET['tahunpelajaran'] == $row['id_tahunpelajaran']) ? "selected" : "" : "" ?>><?php echo $row['tahun_pelajaran']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <button type="submit" class="btn btn-sm btn-danger ml-2">
-                                                <i class="fa-solid fa-file-pdf"></i> PDF
-                                            </button>
+                                            <div class="col-lg-3" style="text-align:left; padding-bottom: 9px;">
+                                                <button type="submit" class="btn btn-sm btn-primary " style="padding: 7px 15px;">
+                                                    <i class="fa-solid fa-filter"></i> Filter
+                                                </button>
+                                                <?php if ($queryString != "") { ?>
+                                                <a href="<?php echo base_url(); ?>bendahara/historypembayaran/cetak_laporankeuangan_by_kelas?<?= $queryString ?>"><button type="button" class="btn btn-sm btn-danger ml-2" style="padding: 7px 15px;">
+                                                    <i class="fa-solid fa-file-pdf"></i> PDF
+                                                </button></a>
+                                                <?php } ?>
+                                            </div>
+                                            
+                                            
+                                            
+                                            
                                         </form>
 
 

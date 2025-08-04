@@ -86,8 +86,8 @@
                                                 <tr>
                                                     <td class="text-center"><?php echo $index + 1; ?></td>
                                                     <td width="40%" class="text-leaft"><?php echo $itembanksoal['nama_arsip']; ?></td>
-                                                    <td class="text-center"><?php echo $itembanksoal['nama_ptk']; ?></td>
                                                     <td class="text-center"><?php echo $itembanksoal['kategori']; ?></td>
+                                                    <td class="text-center"><?php echo $itembanksoal['nama_ptk']; ?></td>
 
                                                     <td class="text-center">
                                                         <?php

@@ -57,6 +57,12 @@ class Arsip_Model extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
+    public function simpan_raport($data)
+    {
+        $this->db->insert('raport', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
 
     public function hapus_banksoal($banksoal_id)
     {

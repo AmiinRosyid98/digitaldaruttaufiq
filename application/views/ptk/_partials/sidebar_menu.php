@@ -68,6 +68,25 @@
                 </p>
             </a>
         </li>
+        <?php 
+            $current_user = $this->Auth_ptk->current_user();
+            $cekwali = $this->db->select('*')
+                            ->from('kelas')
+                            ->where('id_guru', $current_user->id_guru)->get();
+            if($cekwali->num_rows() > 0){
+        ?>
+
+        <li class="nav-item">
+            <a href="<?php echo base_url() ?>ptk/raport" class="nav-link <?php if ($this->uri->segment(2) == "raport") {
+                                                                                    echo "active";
+                                                                                } ?>" href="<?= base_url('raport') ?>">
+                <i class="nav-icon fas fa-clipboard"></i>
+                <p>
+                    Raport
+                </p>
+            </a>
+        </li>
+        <?php } ?>
 
         <li class="nav-item menu-<?php echo ($this->uri->segment(2) == "filearsip" || $this->uri->segment(2) == "filearsip") ? "open" : ""; ?>">
             <a href="#" class="nav-link">

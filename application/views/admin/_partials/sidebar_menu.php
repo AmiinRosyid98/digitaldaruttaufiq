@@ -66,6 +66,14 @@
                     </a>
                 </li>
             </ul>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="<?php echo base_url() ?>admin/masterdata/metodepembayaran" class="nav-link <?php echo ($this->uri->segment(3) == "metodepembayaran") ? "active" : ""; ?>">
+                        <i class="fas fa-book-open nav-icon text-warning"></i>
+                        <p>Metode Pembayaran</p>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item">
@@ -364,7 +372,16 @@
         </li>
 
 
-
+        <li class="nav-item">
+            <a href="<?php echo base_url() ?>admin/sistem/settingpaymentgateway" class="nav-link <?php if ($this->uri->segment(3) == "settingpaymentgateway") {
+                                                                                            echo "active";
+                                                                                        } ?>">
+                <i class="fa fa-gear nav-icon"></i>
+                <p>
+                    Setting Payment
+                </p>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a href="<?php echo base_url() ?>admin/manajemenpengguna" class="nav-link <?php if ($this->uri->segment(2) == "manajemenpengguna") {

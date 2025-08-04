@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Jakarta');
+	
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -331,7 +332,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/userguide3/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'D1G1T4L_D4RUTT4UF1Q';
 
 /*
 |--------------------------------------------------------------------------
@@ -535,3 +536,8 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+date_default_timezone_set('Asia/Jakarta');
+
+
+

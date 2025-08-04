@@ -43,6 +43,16 @@ class Tahunpelajaran_Model extends CI_Model
         return $result;
     }
 
+    public function get_tahunpelajaran_now(){
+        $query = $this->db->query("SELECT * FROM tahunpelajaran
+            WHERE tahun_pelajaran = 
+                CASE 
+                    WHEN MONTH(NOW()) >= 7 THEN CONCAT(YEAR(NOW()), '/', YEAR(NOW()) + 1)
+                    ELSE CONCAT(YEAR(NOW()) - 1, '/', YEAR(NOW()))
+                END;");
+        return $query->row();
+    }
+
 
     
 

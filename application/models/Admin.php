@@ -17,7 +17,10 @@ class Admin extends CI_Model
         $this->db->update($this->_table, $data);
         return $this->db->affected_rows() > 0;
     }
-
+    public function get_metode_by_id($id)
+    {
+        return $this->db->get_where('metode_pembayaran', array('id' => $id))->row_array();
+    }
 
     public function update_avatar($user_id, $avatar_filename)
     {
@@ -53,6 +56,46 @@ class Admin extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
+
+    public function get_metode_pembayaran()
+    {
+        // $this->db->order_by('id', 'ASC');
+        // $query = $this->db->get('metode_pembayaran');
+
+        $query = $this->db->select("kategori_channel_pembayaran.kategori, metode_pembayaran.*")
+                        ->from("metode_pembayaran")
+                        ->join("kategori_channel_pembayaran", "metode_pembayaran.id_kategori = kategori_channel_pembayaran.id", "left")
+                        ->order_by('metode_pembayaran.id', 'ASC')->get();
+        return $query->result_array();
+    }
+
+    
+    public function get_kategori_metode_pembayaran()
+    {
+        $this->db->where("status","Aktif");
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get('kategori_channel_pembayaran');
+        return $query->result_array();
+    }
+
+    public function simpan_metode($data)
+    {
+        $this->db->insert('metode_pembayaran', $data);
+        return $this->db->affected_rows() > 0;
+    }
+    public function update_metode($id, $data)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('metode_pembayaran', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    public function hapus_metode($metodeid)
+    {
+        $this->db->where('id', $metodeid);
+        $result = $this->db->delete('metode_pembayaran');
+        return $result;
+    }
 
 
 

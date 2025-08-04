@@ -171,6 +171,52 @@ class Poskeuangan_Model extends CI_Model
         return $query->result_array();
     }
 
+    public function get_metode_pembayaran($jenis)
+    {
+        // $this->db->order_by('id', 'ASC');
+        // $query = $this->db->get('metode_pembayaran');
+
+        $query = $this->db->select("kategori_channel_pembayaran.kategori, metode_pembayaran.*")
+                        ->from("metode_pembayaran")
+                        ->join("kategori_channel_pembayaran", "metode_pembayaran.id_kategori = kategori_channel_pembayaran.id", "left")
+                        ;
+        if($jenis == "va"){
+            $query = $query->where('metode_pembayaran.id_kategori', 1);      
+        } else if($jenis == "retail"){
+            $query = $query->where('metode_pembayaran.id_kategori', 4);      
+
+        } else if($jenis == "ewallet"){
+            $query = $query->where('metode_pembayaran.id_kategori', 3);      
+
+        } else if($jenis == "qris"){
+            $query = $query->where('metode_pembayaran.id_kategori', 2);      
+
+        }
+        $query = $query->order_by('metode_pembayaran.id', 'ASC')->get();
+        return $query->result_array();
+    }
+
+    public function get_tarifpembayaran_by_id($id)
+    {
+        $this->db->select('*');
+        $this->db->from('tarifpembayaran');
+        $this->db->join('jenispembayaran', 'tarifpembayaran.kode_pembayaran = jenispembayaran.id_jenispembayaran');
+        $this->db->join('poskeuangan', 'jenispembayaran.kode_pos = poskeuangan.id_pos');
+        $this->db->join('kelas', 'tarifpembayaran.kode_kelas = kelas.no_kelas');
+        $this->db->join('tahunpelajaran', 'jenispembayaran.kode_tahunpelajaran = tahunpelajaran.id_tahunpelajaran');
+        $this->db->join('tipepembayaran', 'jenispembayaran.tipe_pembayaran = tipepembayaran.id_tipepembayaran');
+
+
+
+        $this->db->order_by('tahun_pelajaran', 'DESC');
+        $this->db->order_by('nama_pos', 'ASC');
+        $this->db->order_by('nama_kelas', 'ASC');
+
+        $this->db->where('tarifpembayaran.id_pembayaran', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     public function get_tarifpembayaran_by_kode($kode_kelas, $kode_pembayaran)
     {
         $this->db->where('kode_kelas', $kode_kelas);

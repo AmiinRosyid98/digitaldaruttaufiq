@@ -55,6 +55,20 @@ class Pesertadidik extends CI_Model
         return $query->row_array(); // Mengembalikan satu baris data sebagai array asosiatif
     }
 
+    public function get_dataraport($id_siswa)
+    {
+        $this->db->select('*');
+        $this->db->from('raport');
+        $this->db->join('kelas', 'raport.id_kelas = kelas.id_kelas');
+        $this->db->join('ptk', 'ptk.id_guru = raport.id_guru');
+
+        $this->db->where('raport.id_siswa', $id_siswa);
+        $this->db->group_by("raport.id_kelas")
+        ;
+        $query = $this->db->get();
+        return $query->result_array(); // Mengembalikan satu baris data sebagai array asosiatif
+    }
+
     // Model Pesertadidik
     public function get_buku_by_siswa_kode_kelas($siswa_kode_kelas)
     {
@@ -213,19 +227,96 @@ class Pesertadidik extends CI_Model
 
     public function get_pembayaran($id_siswa)
     {
-        $this->db->select('siswa.id_siswa, siswa.nis, siswa.nama_siswa, kelas.nama_kelas, poskeuangan.nama_pos, pembayaran.id_pembayaran, pembayaran.jumlah_tarif, tahunpelajaran.tahun_pelajaran, SUM(pembayaran.jumlah_pembayaran) as jumlah_pembayaran');
-        $this->db->from('pembayaran');
-        $this->db->join('siswa', 'pembayaran.id_siswa = siswa.id_siswa', 'left');
-        $this->db->join('kelas', 'pembayaran.id_kelas = kelas.no_kelas', 'left');
-        $this->db->join('poskeuangan', 'pembayaran.id_pos = poskeuangan.id_pos', 'left');
-        $this->db->join('tahunpelajaran', 'pembayaran.id_tahunpelajaran = tahunpelajaran.id_tahunpelajaran', 'left');
+        
+        $get_pembayaran = $this->db->query("
+            SELECT * FROM tarifpembayaran 
+            LEFT JOIN jenispembayaran jp ON jp.id_jenispembayaran = tarifpembayaran.kode_pembayaran 
+            LEFT JOIN poskeuangan pk ON pk.id_pos = jp.kode_pos 
+            LEFT JOIN kelas k on k.no_kelas = tarifpembayaran.kode_kelas
+            LEFT JOIN tahunpelajaran tp on tp.id_tahunpelajaran = jp.kode_tahunpelajaran
+            WHERE tarifpembayaran.kode_kelas = '" . $this->Pesertadidik->get_datasiswa($id_siswa)['kode_kelas'] . "'
+        ");
 
-        $this->db->group_by('pembayaran.id_pos, pembayaran.id_tahunpelajaran, pembayaran.id_kelas, '); // Mengelompokkan berdasarkan id_siswa dan id_pos
-        //$this->db->where('siswa.status_kelulusan', 0);
-        $this->db->where('siswa.id_siswa', $id_siswa);
-        $this->db->order_by('kelas.nama_kelas, tahunpelajaran.tahun_pelajaran', 'ASC');
+        $result = array(); // Array akhir
 
-        $query = $this->db->get();
-        return $query->result_array();
+        foreach($get_pembayaran->result() as $key){
+            $this->db->select('
+                siswa.id_siswa, siswa.nis, siswa.nama_siswa, kelas.nama_kelas, 
+                poskeuangan.nama_pos, pembayaran.id_pembayaran, pembayaran.jumlah_tarif, 
+                tahunpelajaran.tahun_pelajaran, 
+                SUM(pembayaran.jumlah_pembayaran) as jumlah_pembayaran,
+                pembayaran.* 
+            ');
+            $this->db->from('pembayaran');
+            $this->db->join('siswa', 'pembayaran.id_siswa = siswa.id_siswa', 'left');
+            $this->db->join('kelas', 'pembayaran.id_kelas = kelas.no_kelas', 'left');
+            $this->db->join('poskeuangan', 'pembayaran.id_pos = poskeuangan.id_pos', 'left');
+            $this->db->join('tahunpelajaran', 'pembayaran.id_tahunpelajaran = tahunpelajaran.id_tahunpelajaran', 'left');
+
+            $this->db->where('siswa.id_siswa', $id_siswa);
+            $this->db->where('id_pembayaran', $key->id_pembayaran );
+            $this->db->group_by('pembayaran.id_pos, pembayaran.id_tahunpelajaran, pembayaran.id_kelas');
+            $this->db->order_by('kelas.nama_kelas, tahunpelajaran.tahun_pelajaran', 'ASC');
+
+
+            $query = $this->db->get();
+            // var_dump($this->db->last_query());die;
+
+            if($query->num_rows()>0){
+                foreach ($query->result_array() as $row) {
+                     $result[] = [
+                        'id_siswa'          => $row['id_siswa'],
+                        'nis'               => $row['nis'],
+                        'nama_siswa'        => $row['nama_siswa'],
+                        'nama_kelas'        => $row['nama_kelas'],
+                        'nama_pos'          => $row['nama_pos'],
+                        'id_pembayaran'     => $row['id_pembayaran'],
+                        'id_pembayaran_enc' => urlencode($this->encryption->encrypt($row['id_pembayaran'])),
+                        'jumlah_tarif'      => $row['jumlah_tarif'],
+                        'tahun_pelajaran'   => $row['tahun_pelajaran'],
+                        'jumlah_pembayaran' => $row['jumlah_pembayaran'],
+                        'metode_pembayaran' => $row['metode_pembayaran'],
+                    ];
+                }
+            } else {
+                $result[] = [
+                        'id_siswa'          => $id_siswa,
+                        'nis'               => $this->Pesertadidik->get_datasiswa($id_siswa)['nis'],
+                        'nama_siswa'        => $this->Pesertadidik->get_datasiswa($id_siswa)['nama_siswa'],
+                        'nama_kelas'        => $key->nama_kelas,
+                        'nama_pos'          => $key->nama_pos,
+                        'id_pembayaran'     => $key->id_pembayaran,
+                        'id_pembayaran_enc' => urlencode($this->encryption->encrypt($key->id_pembayaran)),
+                        'jumlah_tarif'      => $key->jumlah_tarif,
+                        'tahun_pelajaran'   => $key->tahun_pelajaran,
+                        'jumlah_pembayaran' => "0",
+                        'metode_pembayaran' => $row['metode_pembayaran'],
+                        
+                    ];
+            }
+        }
+        return $result;
+        //asdas
+        //adasds
+        // echo "<pre>";
+        // var_dump($result);die;
+
+
+
+        // $this->db->select('siswa.id_siswa, siswa.nis, siswa.nama_siswa, kelas.nama_kelas, poskeuangan.nama_pos, pembayaran.id_pembayaran, pembayaran.jumlah_tarif, tahunpelajaran.tahun_pelajaran, SUM(pembayaran.jumlah_pembayaran) as jumlah_pembayaran');
+        // $this->db->from('pembayaran');
+        // $this->db->join('siswa', 'pembayaran.id_siswa = siswa.id_siswa', 'left');
+        // $this->db->join('kelas', 'pembayaran.id_kelas = kelas.no_kelas', 'left');
+        // $this->db->join('poskeuangan', 'pembayaran.id_pos = poskeuangan.id_pos', 'left');
+        // $this->db->join('tahunpelajaran', 'pembayaran.id_tahunpelajaran = tahunpelajaran.id_tahunpelajaran', 'left');
+
+        // $this->db->group_by('pembayaran.id_pos, pembayaran.id_tahunpelajaran, pembayaran.id_kelas, '); // Mengelompokkan berdasarkan id_siswa dan id_pos
+        // //$this->db->where('siswa.status_kelulusan', 0);
+        // $this->db->where('siswa.id_siswa', $id_siswa);
+        // $this->db->order_by('kelas.nama_kelas, tahunpelajaran.tahun_pelajaran', 'ASC');
+
+        // $query = $this->db->get();
+        // var_dump($this->db->last_query());die;
+        // return $query->result_array();
     }
 }

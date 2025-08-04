@@ -8,6 +8,7 @@ class Ptk extends CI_Controller
         $this->load->model('admin');
         $this->load->model('Kelas_Model');
         $this->load->model('Mapel_Model');
+        $this->load->model('Siswa_Model');
 
         $this->load->model('Ptk_Model');
         $this->load->model('Tahunangkatan_Model');
@@ -43,6 +44,153 @@ class Ptk extends CI_Controller
         $data['kelas']          = $this->Kelas_Model->get_kelas();
         $data['mapel']          = $this->Mapel_Model->get_mapel();
         $this->load->view('admin/ptk', $data);
+    }
+    public function detailptk($siswa_id)
+    {
+
+        $logo_data = $this->admin->get_logo();
+        $ptk_data = $this->Ptk_Model->get_ptk_by_id($siswa_id);
+        $data['logo']           = $logo_data['logo'];
+        $data['profilsekolah']  = $this->admin->get_profilsekolah_data();
+        $data['current_user']   = $this->auth_admin->current_user();
+        $data['kelas']          = $this->Kelas_Model->get_kelas();
+        $data['ptk']          = $ptk_data;
+        $this->load->view('admin/ptk_detail', $data);
+    }
+
+    public function updatedatadiriguru()
+    {
+        $guru_id = $this->input->post('editGuruId');
+        $data = array(
+            'nama_ptk'        => $this->input->post('editNamaPtk'),
+            'nip'        => $this->input->post('editNipPtk'),
+            'nik'        => $this->input->post('editNikPtk'),
+            'jeniskelamin'      => $this->input->post('editJeniskelamin'),
+            'agama'             => $this->input->post('editAgama'),
+            'tempatlahir_ptk'       => $this->input->post('editTempatlahir'),
+            'tanggallahir_ptk'      => $this->input->post('editTanggallahir'),
+            'ptk_alamat'      => $this->input->post('editPtkAlamat'),
+            'kelurahan'   => $this->input->post('editPtkKelurahan'),
+            'kecamatan'   => $this->input->post('editPtkKecamatan'),
+            'kabupaten'   => $this->input->post('editPtkKabupaten'),
+            'provinsi'    => $this->input->post('editPtkProvinsi'),
+            'no_telepon'              => $this->input->post('editNohp'),
+            'email'             => $this->input->post('editPtkemail')
+        );
+
+
+        $lanjut = "yes";
+        if (isset($_FILES['editPhoto']) && $_FILES['editPhoto']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = './assets/ptk/profile/'; // Path untuk menyimpan foto
+            $config['allowed_types']  = 'jpg|jpeg|png';
+            $config['max_size']       = 2048; // Maksimal 2MB
+            $config['file_name']      = 'avatar_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editPhoto')) {
+                $upload_data = $this->upload->data();
+                // Simpan informasi foto guru ke database
+                $this->Ptk_Model->update_foto($guru_id, $upload_data['file_name']); // Gunakan kolom 'avatar'
+
+                $this->session->set_flashdata('success_message', 'Foto guru berhasil diupload.');
+            } else {
+                $this->session->set_flashdata('error_message', $this->upload->display_errors());
+                $lanjut = "no";
+            }
+
+        } 
+        if($lanjut == "yes"){
+            $result = $this->Ptk_Model->update_guru($guru_id, $data);
+        } else {
+            $result = false;
+            // $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Diri Guru');
+
+        }
+        // var_dump($result);die;
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data Diri Guru berhasil diperbarui.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Diri Guru');
+        }
+        redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#datadiri';
+    }
+
+    public function updatedatapendidikan()
+    {
+        $guru_id = $this->input->post('editGuruId');
+        $data = array(
+            'pendidikan_terakhir'        => $this->input->post('editPendidikanTerakhir'),
+            'nama_institusi_pendidikan'        => $this->input->post('editInstitusiPendidikan'),
+            'jurusan'        => $this->input->post('editJurusan'),
+            'tahun_lulus'      => $this->input->post('editTahunLulus'),
+            'ijazah_transkrip'             => $this->input->post('editIjazah'),
+        );
+
+        $result = $this->Ptk_Model->update_guru($guru_id, $data);
+
+        // var_dump($result);die;
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data Diri Guru berhasil diperbarui.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Diri Guru');
+        }
+        redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#datapendidikan';
+    }
+
+    public function updatedatakepegawaian()
+    {
+        $guru_id = $this->input->post('editGuruId');
+        $data = array(
+            'status_kepegawaian'        => $this->input->post('editStatusKepegawaian'),
+            'tmt'        => $this->input->post('editTanggalMulaiTugas'),
+            'jabatan_tambahan'        => $this->input->post('editJabatan'),
+            'status_aktif'      => $this->input->post('editStatusAktif'),
+            'nomor_rekening'             => $this->input->post('editNomorRekening'),
+        );
+
+        $lanjut = "yes";
+        if (isset($_FILES['editSkPengangkatan']) && $_FILES['editSkPengangkatan']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = './assets/ptk/dokumen/'; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'sk_pengangkatan_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editSkPengangkatan')) {
+                $upload_data = $this->upload->data();
+                // Simpan informasi foto guru ke database
+                $this->Ptk_Model->update_sk_pengangkatan($guru_id, $upload_data['file_name']); // Gunakan kolom 'avatar'
+
+                $this->session->set_flashdata('success_message', 'SK Pengangkatan guru berhasil diupload.');
+            } else {
+                $this->session->set_flashdata('error_message', $this->upload->display_errors());
+                // var_dump($this->upload->display_errors());die;
+                // $lanjut = "no";
+                redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#datakepegawaian';
+
+            }
+
+        } 
+        
+        $result = $this->Ptk_Model->update_guru($guru_id, $data);
+
+        /*var_dump($lanjut);
+        var_dump($result);die;*/
+
+        // $result = $this->Ptk_Model->update_guru($guru_id, $data);
+
+        // var_dump($result);die;
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data Diri Guru berhasil diperbarui.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Diri Guru');
+            // sadsadas
+        }
+        redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#datakepegawaian';
     }
 
 

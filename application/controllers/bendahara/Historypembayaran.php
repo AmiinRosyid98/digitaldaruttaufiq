@@ -24,6 +24,10 @@ class Historypembayaran extends CI_Controller
 
     public function index()
     {
+        $no_kelas = $this->input->get('kelas');
+        $pos_keuangan = $this->input->get('poskeuangan');
+        $tahun_pelajaran = $this->input->get('tahunpelajaran');
+
         // Mengambil data logo dari model admin
         $logo_data = $this->Admin->get_logo();
         // Mendapatkan data pengguna yang sedang login
@@ -33,7 +37,16 @@ class Historypembayaran extends CI_Controller
         // Mengambil data profil sekolah dari model admin
         $data['profilsekolah'] = $this->Admin->get_profilsekolah_data();
         // Mengambil sejarah pembayaran dari model Pembayaransiswa_Model
-        $data['historypembayaran'] = $this->Pembayaransiswa_Model->get_historypembayaran();
+        if(($this->input->get('kelas')) != null){
+
+            $data['historypembayaran'] = $this->Pembayaransiswa_Model->get_historypembayaran($no_kelas, $pos_keuangan, $tahun_pelajaran);
+        } else {
+            $data['historypembayaran'] = $this->Pembayaransiswa_Model->get_historypembayaran();
+        }
+
+        $queryString = $_SERVER['QUERY_STRING'];
+
+
         $data['kelas'] = $this->Pembayaransiswa_Model->get_kelas();
         $data['tahunpelajaran'] = $this->Pembayaransiswa_Model->get_tahunpelajaran();
         $data['poskeuangan']    = $this->Pembayaransiswa_Model->get_poskeuangan();
@@ -52,6 +65,7 @@ class Historypembayaran extends CI_Controller
         $data['jumlah_pembayaran']  = $total_pembayaran;
         $data['sisa_total_tagihan'] = $sisa_total_tagihan;
         $data['jumlah_tarif']       = $jumlah_tarif;
+        $data['queryString']       = $queryString;
 
         // Memuat view bendahara/historypembayaran dengan data yang telah diproses
         $this->load->view('bendahara/historypembayaran', $data);

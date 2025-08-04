@@ -50,7 +50,8 @@ class Pembayaransiswa extends CI_Controller
             // Filter berdasarkan kelas dan pos keuangan
             $data['siswa'] = $this->Pembayaransiswa_Model->filter_siswa_by_kelas_dan_poskeuangan($selected_kelas, $selected_poskeuangan, $selected_tahunpelajaran );
         }
-    
+        
+        
          // Dapatkan jumlah pembayaran untuk setiap siswa
         foreach ($data['siswa'] as &$siswa_item) {
             $siswa_item['jumlah_pembayaran'] = $this->Pembayaransiswa_Model->get_jumlah_pembayaran_by_id_siswa($siswa_item['id_siswa']);

@@ -110,6 +110,9 @@
                                             <td class="text-center">
                                                 <a class="btn btn-danger btn-sm mb-0" href="#" onclick="deletePtk(<?= $ptk['id_guru']; ?>)"><i class="fas fa-trash"></i></a>
                                                 <a class="btn btn-warning btn-sm mb-0" href="#" onclick="editPtk(<?= $ptk['id_guru']; ?>)"><i class="fas fa-pen"></i></a>
+
+                                                <a class="btn btn-primary btn-sm" href="<?php echo base_url('admin/ptk/detailptk/') . $ptk['id_guru']; ?>"><i class="fas fa-user-graduate"></i></a>
+
                                                 <!-- Form Upload Foto -->
                                                 <form action="<?= site_url('admin/ptk/upload_foto/' . $ptk['id_guru']); ?>" method="post" enctype="multipart/form-data" class="d-inline">
                                                     <label class="btn btn-primary btn-sm mb-0">

@@ -30,24 +30,45 @@
                 <!-- isi content -->
                 <div class="content">
 
-                    <div class="card">
+                    <div class="card" >
                         <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="card-title">Data Tagihan Siswa </h3>
                         </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="margin-bottom:50px">
+
+                            <div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 " style="margin: 0;">Nama Siswa</label>
+                                    <div class="col-sm-10">
+                                        <?= $current_user->nama_siswa ;  ?>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 " style="margin: 0;">NIS</label>
+                                    <div class="col-sm-10">
+                                        <?= $current_user->nis ;  ?>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 " style="margin: 0;">Kelas Sekarang</label>
+                                    <div class="col-sm-10">
+                                        <?= $kelas->kode_tingkat ;  ?> / <?= $kelas->nama_kelas ;  ?>
+                                        
+                                    </div>
+                                </div>
+                            </div>
                             <table id="example1" class="table table-bordered table-striped ">
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
-                                        <th>NIS</th>
                                         <th>Nama Tagihan</th>
-                                        <th>Kelas</th>
                                         <th>Tahun Ajaran</th>
                                         <th>Jumlah Tagihan</th>
                                         <th>Telah Dibayar</th>
                                         <th>Sisa Tagihan</th>
+                                        <th>Bayar</th>
 
                                     </tr>
                                 </thead>
@@ -60,19 +81,69 @@
 
                                     <tr class="text-center" style="<?php echo $warna_baris; ?>">
                                         <td><?php echo $index + 1; ?></td>
-                                        <td class="text-left"><strong><?php echo $pembayaran['nama_siswa']; ?></strong><br>
-                                            NIS : <?php echo $pembayaran['nis']; ?> 
-                                        </td>
                                         <td><?php echo $pembayaran['nama_pos']; ?></td>
-                                        <td><?php echo $pembayaran['nama_kelas']; ?></td>
                                         <td><?php echo $pembayaran['tahun_pelajaran']; ?></td>
-                                        <td class="text-bold">Rp. <?php echo number_format($pembayaran['jumlah_tarif']); ?></td>
-                                        <td>Rp. <?php echo number_format($pembayaran['jumlah_pembayaran']); ?></td>
+                                        <td class="text-bold">Rp. <?php echo number_format($pembayaran['jumlah_tarif'], 0, ',', '.'); ?></td>
+                                        <td>Rp. <?php echo number_format($pembayaran['jumlah_pembayaran'], 0, ',', '.'); ?><br>
+                                            <?php 
+                                            $disabled_all = "";
+                                            $tf_otomatis = "ya";
+                                            if ((int)$pembayaran['jumlah_pembayaran'] <= 0) { ?>
+                                                <span class=" translate-middle badge rounded-pill bg-secondary"><i class="fas fa-circle-exclamation"></i>&nbsp;Belum Bayar</span>
+                                            <?php } else if ((int)$pembayaran['jumlah_pembayaran'] > 0)  {
+                                                $tf_otomatis = "tidak";
+
+                                             ?>
+                                                <?php if ((int)$pembayaran['jumlah_pembayaran'] < (int)$pembayaran['jumlah_tarif']) {?>
+                                                    <span class=" translate-middle badge rounded-pill bg-warning"><i class="fas fa-hourglass-half"></i>&nbsp;Dibayar Sebagian</span>
+                                                <?php } else { 
+                                                    $disabled_all = "disabled";
+                                                    ?>
+                                                    <span class=" translate-middle badge rounded-pill bg-success"><i class="fas fa-circle-check"></i>&nbsp;Lunas</span>
+                                                    <?php if ($pembayaran['metode_pembayaran'] != "") {
+                                                    ?>
+                                                        <br><small><i class="fas fa-bank"> </i>
+                                                            <?php 
+                                                                $string = $pembayaran['metode_pembayaran'];
+                                                                if (substr($string, -2) == "VA") {
+                                                                    // Jika ini Bank
+                                                                    $string_baru = "Bank ". substr($string, 0, -2);
+                                                                } else {
+                                                                    if($string != "QRIS" && $string != "OVO" && $string != "DANA"){
+
+                                                                        $string_baru = ucwords(strtolower($string));
+                                                                    } else{
+                                                                        $string_baru = "dsd ".(($string));
+
+                                                                    }
+                                                                }
+                                                                echo $string_baru;
+                                                            ?>
+                                                            </small>
+                                                    <?php } ?> 
+                                                <?php } // sdsds ?>
+
+                                            <?php } else { ?>
+                                            <?php }  ?>
+                                        </td>
                                         <td class="text-center">
                                             <?php 
                                             echo 'Rp ' . number_format($sisa_tagihan, 0, ',', '.');
                                             ?>
                                         </td>  
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary btn-bayar-langsung" <?= $disabled_all ?> >Bayar Langsung</button>
+                                            <?php if ($tf_otomatis == "ya") : ?>
+                                            <a href="<?= base_url() ?>siswa/tagihan/transfer/<?= $pembayaran['id_pembayaran_enc'] ?>" class="btn btn-sm btn-success" <?= $disabled_all ?> >Transfer Otomatis</a>
+                                            <?php else : ?>
+                                                <?php if ($pembayaran['metode_pembayaran'] != "") {
+                                                    ?>
+                                                <a href="<?= base_url() ?>siswa/tagihan/transfer/<?= $pembayaran['id_pembayaran_enc'] ?>" class="btn btn-sm btn-info"  >Detail Pembayaran</a>
+                                                <?php } else { ?>
+                                                <button href="" class="btn btn-sm btn-success" disabled >Transfer Otomatis</a>
+                                                <?php } ?>
+                                            <?php endif ?>
+                                        </td>
 
 
                                     </tr>
@@ -177,7 +248,9 @@
                            }
                         }
                   });
-               </script>
+
+
+            </script>
 
 
 

@@ -87,33 +87,34 @@ class Rekapabsensiguru extends CI_Controller
 
 
     public function rekapbulanguru()
-{
-    // Ambil logo dan data profil sekolah
-    $logo_data              = $this->Admin->get_logo();
-    $data['logo']           = $logo_data['logo'];
-    $data['current_user']   = $this->Auth_admin->current_user();
-    $data['profilsekolah']  = $this->Admin->get_profilsekolah_data();
+    {
+        // var_dump("tes");die;
+        // Ambil logo dan data profil sekolah
+        $logo_data              = $this->Admin->get_logo();
+        $data['logo']           = $logo_data['logo'];
+        $data['current_user']   = $this->Auth_admin->current_user();
+        $data['profilsekolah']  = $this->Admin->get_profilsekolah_data();
 
-    // Ambil nilai dari form jika ada
-    $month = $this->input->get('month');
-    $year = $this->input->get('year');
+        // Ambil nilai dari form jika ada
+        $month = $this->input->get('month');
+        $year = $this->input->get('year');
 
-    // Set default bulan dan tahun jika kosong
-    if (empty($month) || empty($year)) {
-        $month = date('m');
-        $year = date('Y');
+        // Set default bulan dan tahun jika kosong
+        if (empty($month) || empty($year)) {
+            $month = date('m');
+            $year = date('Y');
+        }
+
+        // Panggil model untuk mengambil data absensi bulanan
+        $data['absensibulan'] = $this->Absensi_Model->get_absensiguru_bulanan($month, $year);
+
+        // Simpan nilai bulan dan tahun untuk dikirim kembali ke form
+        $data['month'] = $month;
+        $data['year'] = $year;
+
+        // Load view dengan data yang sudah disiapkan
+        $this->load->view('admin/absensi/rekapbulanguru', $data);
     }
-
-    // Panggil model untuk mengambil data absensi bulanan
-    $data['absensibulan'] = $this->Absensi_Model->get_absensiguru_bulanan($month, $year);
-
-    // Simpan nilai bulan dan tahun untuk dikirim kembali ke form
-    $data['month'] = $month;
-    $data['year'] = $year;
-
-    // Load view dengan data yang sudah disiapkan
-    $this->load->view('admin/absensi/rekapbulanguru', $data);
-}
 
 
 

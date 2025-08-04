@@ -113,7 +113,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="<?php echo site_url('admin/masterdata/simpan_kelas'); ?>" method="POST">
+                            <form action="<?php echo site_url('admin/masterdata/simpan_kelas'); ?>" id="simpan_kelas" method="POST">
                                 <div class="form-group">
                                     <label for="kodeLayanan">Kode Kelas</label>
                                     <div class="input-group">
@@ -138,7 +138,17 @@
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <div class="form-group">
+                                    <label for="kode_tingkat">Wali Kelas</label>
+                                    <select class="form-control" id="id_guru" name="id_guru" >
+                                        <option value="">Pilih Wali Kelas</option>
+                                        <?php foreach ($ptk as $wali) : ?>
+                                            <option value="<?php echo $wali['id_guru']; ?>"><?php echo $wali['nama_ptk']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <button type="submit" id="btn_simpan_kelas" class="btn btn-primary">Simpan</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                             </form>
                         </div>
@@ -175,6 +185,16 @@
                                         <option value="">Pilih Tingkat</option>
                                         <?php foreach ($tingkat as $item_tingkat) : ?>
                                             <option value="<?php echo $item_tingkat['nama_tingkat']; ?>"><?php echo $item_tingkat['nama_tingkat']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_id_guru">Wali Kelas</label>
+                                    <select class="form-control" id="edit_id_guru" name="edit_id_guru" required>
+                                        <option value="">Pilih Wali Kelas</option>
+                                        <?php foreach ($ptk as $wali) : ?>
+                                            <option value="<?php echo $wali['id_guru']; ?>"><?php echo $wali['nama_ptk']; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

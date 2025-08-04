@@ -37,48 +37,37 @@
                 <div class="content">
 
                     <div class="card">
-                        <div class="card">
+                        <div class="card" style="margin-bottom: 0px;">
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fa-brands fa-cloudflare"></i> Absensi Online </h3>
                             </div>
                             <div class="card-body">
                                 <div class="row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <form method="get" action="<?php echo base_url('admin/rekapabsensiguru/rekapharianguru'); ?>">
                                             <div class="row">
-                                                <div class="col-sm-5 text-end">
-                                                    <label for="start_date" class="col-form-label">Tanggal:</label>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="start_date">Tanggal:</label>
+                                                        <input type="date" id="start_date" name="start_date" class="form-control" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-7">
-                                                    <input type="date" id="start_date" name="start_date" class="form-control" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-sm-12 text-end">
+                                                <div class="col-md-3" style="padding-top: 31px;">
                                                     <button type="submit" class="btn btn-primary">Tampilkan</button>
+                                                    <?php if (!empty($start_date)) : ?>
+
+                                                        <a href="<?php echo base_url('admin/absensi/cetak_pdf_absensi_guru?start_date=' . $start_date); ?>" target="_blank" class="btn btn-secondary">
+                                                            Cetak PDF
+                                                        </a>
+                                                    <?php endif; ?>
+
                                                 </div>
                                             </div>
                                         </form>
-
-
-                                        <?php if (!empty($start_date)) : ?>
-                                            <div class="row mt-2">
-                                                <div class="col-sm-12 text-end">
-                                                    <a href="<?php echo base_url('admin/absensi/cetak_pdf_absensi_guru?start_date=' . $start_date); ?>" target="_blank" class="btn btn-secondary">
-                                                        Cetak PDF
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-
-
-
-
-
                                     </div>
 
 
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="table-responsive">
                                             <table id="example1" class="table table-bordered table-striped">
                                                 <thead>

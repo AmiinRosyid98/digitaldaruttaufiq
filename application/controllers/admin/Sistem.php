@@ -8,6 +8,8 @@ class Sistem extends CI_Controller
         $this->load->model('admin');
         $this->load->model('auth_admin');
         $this->load->model('Tahunpelajaran_Model');
+        $this->load->helper('tripay');
+
         $this->load->library('upload');
 
         // Pemeriksaan apakah pengguna telah login
@@ -26,10 +28,49 @@ class Sistem extends CI_Controller
         }
     }
 
+    public function settingpaymentgateway(){
+        // var_dump(tripay_api_key());die;
+        $data['current_user']   = $this->auth_admin->current_user();
+        $logo_data              = $this->admin->get_logo();
+        $data['logo']           = $logo_data['logo'];
+        $logo_datapemerintah    = $this->admin->get_logopemerintah();
+        $data['logopemerintah'] = $logo_datapemerintah['logopemerintah'];
+        $data['profilsekolah']  = $this->admin->get_profilsekolah_data();
+        $data['tahunpelajaran'] = $this->Tahunpelajaran_Model->get_tahunpelajaran();
 
+        // Ambil nilai NPSN dari data profil sekolah
+        $kode_sekolah = isset($data['profilsekolah']['npsn']) ? $data['profilsekolah']['npsn'] : null;
+        //asdas
+
+        // Kode lisensi valid, lanjutkan dengan memperbarui data perusahaan jika ada input POST
+        if ($this->input->post()) {
+            $profilsekolah_data = array(
+                
+                'tripay_link'         => ($this->input->post('tripay_link')),
+                'tripay_api_key'       => ($this->input->post('tripay_api_key')),
+                'tripay_private_key'           => ($this->input->post('tripay_private_key')),
+                'tripay_merchant_id'             => ($this->input->post('tripay_merchant_id'))
+            );
+
+            $update_result = $this->admin->update_perusahaan($profilsekolah_data);
+
+            // Set flashdata berdasarkan hasil update
+            if ($update_result) {
+                $this->session->set_flashdata('toast_message', 'Data Lembaga berhasil diperbarui');
+            } else {
+                $this->session->set_flashdata('toast_message', 'Tidak ada data yang diperbarui');
+            }
+
+            // Redirect kembali ke halaman yang sama
+            redirect('admin/sistem/settingpaymentgateway');
+        }
+        $this->load->view('admin/settingpaymentgateway', $data);
+
+    }
 
     public function updatesistem()
     {
+
         // Mendapatkan data yang diperlukan untuk view
         $data['current_user']   = $this->auth_admin->current_user();
         $logo_data              = $this->admin->get_logo();

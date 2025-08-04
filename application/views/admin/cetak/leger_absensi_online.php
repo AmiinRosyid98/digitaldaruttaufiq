@@ -26,6 +26,11 @@
             <th><strong><?php echo date('d-m-Y', strtotime($start_date)); ?></strong></th>
         </tr>
         <tr>
+            <th style="width: 70px;">Kelas</th>
+            <th style="width: 10px;">:</th>
+            <th><strong><?php echo $kelas->nama_kelas; ?></strong></th>
+        </tr>
+        <tr>
             <th></th>
         </tr>
     </table>

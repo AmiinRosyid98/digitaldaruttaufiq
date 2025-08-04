@@ -2,6 +2,8 @@
 
 <head>
     <?php $this->load->view('admin/_partials/head.php') ?>
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
@@ -49,19 +51,19 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <button type="submit" class="btn btn-primary mt-4">Tampilkan</button>
+                    <button type="submit" class="btn btn-primary " style="margin-top: 31px;">Tampilkan</button>
+
                 </div>
             </div>
         </form>
 
 
         <div class="table-responsive">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example12" class="table table-bordered table-striped">
                 <thead>
                     <tr class="text-center">
                         <th>No</th>
                         <th>Nama</th>
-                        <th>NIP/No Pegawai</th>
                         <?php 
                             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
                             for ($day = 1; $day <= $daysInMonth; $day++): ?>
@@ -79,8 +81,9 @@
                         ?>
                         <tr>
                             <td class="text-center"><?php echo $index + 1; ?></td>
-                            <td><?php echo html_escape($itemabsen['nama_ptk']); ?></td>
-                            <td class="text-center"><?php echo html_escape($itemabsen['nip']); ?></td>
+                            <td><?php echo html_escape($itemabsen['nama_ptk']); ?><br>
+                                <small>NIP/No Pegawai : <?php echo html_escape($itemabsen['nip']); ?></small>
+                            </td>
                             <?php 
                             $attendance = array_fill(1, $daysInMonth, 'Tidak Masuk');
                             foreach ($absensibulan as $absen) {

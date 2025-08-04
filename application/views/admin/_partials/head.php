@@ -40,5 +40,7 @@
 <link rel="stylesheet" href="<?= base_url('/assets/admin/plugins/dropzone/min/dropzone.min.css'); ?>">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css"/>
+
 <!-- . Library JS dari CDN (bisa dipindah ke body bawah untuk performa) -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

@@ -2,7 +2,7 @@
 
 <head>
 
-    <?php $this->load->view('admin/_partials/head.php') ?>
+    <?php $this->load->view('ptk/_partials/head.php') ?>
 </head>
 
 <body>
@@ -18,16 +18,16 @@
     <body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
         <div class="wrapper">
             <!-- Navbar -->
-            <?php $this->load->view('admin/_partials/navbar.php') ?>
+            <?php $this->load->view('ptk/_partials/navbar.php') ?>
             <!-- /.navbar -->
 
 
             <aside class="main-sidebar elevation-4 sidebar-dark-<?php echo $profilsekolah['menu_active'] ?? ''; ?>" style="background-color: <?php echo $profilsekolah['bg_active'] ?? ''; ?>;">
                 <!-- Sidebar Information -->
-                <?php $this->load->view('admin/_partials/sidebar_information.php') ?>
+                <?php $this->load->view('ptk/_partials/sidebar_information.php') ?>
 
                 <!-- Sidebar Menu -->
-                <?php $this->load->view('admin/_partials/sidebar_menu.php') ?>
+                <?php $this->load->view('ptk/_partials/sidebar_menu.php') ?>
 
             </aside>
 
@@ -116,7 +116,7 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="datadiri">
                                                         <div class="post">
-                                                            <form id="formEditPtk" action="<?php echo base_url('admin/ptk/updatedatadiriguru') . '#datadiri'; ?>" method="post" enctype="multipart/form-data">
+                                                            <form id="formEditPtk" action="<?php echo base_url('ptk/akun/updatedatadiriguru') . '#datadiri'; ?>" method="post" enctype="multipart/form-data">
                                                                 <input type="hidden" name="editGuruId" value="<?php echo $ptk['id_guru']; ?>">
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
@@ -232,7 +232,7 @@
 
                                                     <div class="tab-pane" id="datapendidikan">
                                                         <div class="post">
-                                                            <form id="formEditPtk" action="<?php echo base_url('admin/ptk/updatedatapendidikan') . '#datapendidikan'; ?>" method="post">
+                                                            <form id="formEditPtk" action="<?php echo base_url('ptk/akun/updatedatapendidikan') . '#datapendidikan'; ?>" method="post">
                                                                 <input type="hidden" name="editGuruId" value="<?php echo $ptk['id_guru']; ?>">
 
                                                                 <div class="form-row">
@@ -275,7 +275,7 @@
 
                                                     <div class="tab-pane" id="datakepegawaian">
                                                         <div class="post">
-                                                            <form id="formEditPtk" action="<?php echo base_url('admin/ptk/updatedatakepegawaian') . '#datakepegawaian'; ?>" method="post" enctype="multipart/form-data">
+                                                            <form id="formEditPtk" action="<?php echo base_url('ptk/akun/updatedatakepegawaian') . '#datakepegawaian'; ?>" method="post" enctype="multipart/form-data">
                                                                 <input type="hidden" name="editGuruId" value="<?php echo $ptk['id_guru']; ?>">
 
                                                                 <div class="form-row">
@@ -345,7 +345,7 @@
 
                                                     <div class="tab-pane" id="dokumenpendukung">
                                                         <div class="post">
-                                                            <form id="formEditPtk" action="<?php echo base_url('admin/ptk/updatedokumenpendukung') . '#dokumenpendukung'; ?>" method="post" enctype="multipart/form-data">
+                                                            <form id="formEditPtk" action="<?php echo base_url('ptk/akun/updatedokumenpendukung') . '#dokumenpendukung'; ?>" method="post" enctype="multipart/form-data">
                                                                 <input type="hidden" name="editGuruId" value="<?php echo $ptk['id_guru']; ?>">
 
                                                                 <div class="form-row">
@@ -510,7 +510,7 @@
 
 
 
-        <?php $this->load->view('admin/_partials/footer.php') ?>
+        <?php $this->load->view('ptk/_partials/footer.php') ?>
 
 
 

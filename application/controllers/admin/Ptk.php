@@ -193,6 +193,123 @@ class Ptk extends CI_Controller
         redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#datakepegawaian';
     }
 
+    public function updatedokumenpendukung()
+    {
+        $guru_id = $this->input->post('editGuruId');
+        $data = array(
+            'pendidikan_terakhir'        => $this->input->post('editPendidikanTerakhir'),
+            'nama_institusi_pendidikan'        => $this->input->post('editInstitusiPendidikan'),
+            'jurusan'        => $this->input->post('editJurusan'),
+            'tahun_lulus'      => $this->input->post('editTahunLulus'),
+            'ijazah_transkrip'             => $this->input->post('editIjazah'),
+        );
+        $data = [];
+        $path = './assets/ptk/dokumen/';
+        if (isset($_FILES['editScanIjazah']) && $_FILES['editScanIjazah']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = $path; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'scan_ijazah_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editScanIjazah')) {
+                $upload_data = $this->upload->data();
+                $data['scan_ijazah'] = $upload_data['file_name'];
+            } else {
+                
+
+            }
+
+        } 
+
+        if (isset($_FILES['editScanKtp']) && $_FILES['editScanKtp']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = $path; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'scan_ijazah_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editScanKtp')) {
+                $upload_data = $this->upload->data();
+                $data['scan_ktp'] = $upload_data['file_name'];
+            } else {
+                
+
+            }
+
+        } 
+
+        if (isset($_FILES['editSertifikatPendidik']) && $_FILES['editSertifikatPendidik']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = $path; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'scan_ijazah_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editSertifikatPendidik')) {
+                $upload_data = $this->upload->data();
+                $data['sertifikat_pendidik'] = $upload_data['file_name'];
+            } else {
+                
+
+            }
+
+        } 
+        if (isset($_FILES['editSertifikatPelatihan']) && $_FILES['editSertifikatPelatihan']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = $path; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'scan_ijazah_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editSertifikatPelatihan')) {
+                $upload_data = $this->upload->data();
+                $data['sertifikat_pelatihan'] = $upload_data['file_name'];
+            } else {
+                
+
+            }
+
+        } 
+        if (isset($_FILES['editPortofolio']) && $_FILES['editPortofolio']['error'] == UPLOAD_ERR_OK) {
+            $config['upload_path']   = $path; // Path untuk menyimpan foto
+            $config['allowed_types']  = '*';
+            $config['max_size']       = 100048; // Maksimal 2MB
+            $config['file_name']      = 'scan_ijazah_' . $guru_id; // Nama file unik
+            $this->upload->initialize($config);
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('editPortofolio')) {
+                $upload_data = $this->upload->data();
+                $data['portofolio_cv'] = $upload_data['file_name'];
+            } else {
+                
+
+            }
+
+        } 
+
+
+        $result = $this->Ptk_Model->update_guru($guru_id, $data);
+
+        // var_dump($result);die;
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data Diri Guru berhasil diperbarui.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Diri Guru');
+        }
+        redirect(base_url('admin/ptk/detailptk/') . $guru_id) . '#dokumenpendukung';
+    }
+
 
     public function upload_foto($id_guru)
     {

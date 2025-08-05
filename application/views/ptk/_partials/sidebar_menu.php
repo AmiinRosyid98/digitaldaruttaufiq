@@ -108,6 +108,17 @@
         </li>
 
         <li class="nav-item">
+            <a href="<?php echo base_url() ?>ptk/akun" class="nav-link <?php if ($this->uri->segment(2) == "akun") {
+                                                                                    echo "active";
+                                                                                } ?>">
+                <i class="nav-icon fas fa-gear"></i>
+                <p>
+                    Akun Saya
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="<?php echo base_url() ?>Auth/logout_ptk" class="nav-link">
                 <i class="nav-icon fas fa-solid fa-power-off"></i>
                 <p>

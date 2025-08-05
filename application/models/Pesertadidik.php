@@ -290,7 +290,7 @@ class Pesertadidik extends CI_Model
                         'jumlah_tarif'      => $key->jumlah_tarif,
                         'tahun_pelajaran'   => $key->tahun_pelajaran,
                         'jumlah_pembayaran' => "0",
-                        'metode_pembayaran' => $row['metode_pembayaran'],
+                        'metode_pembayaran' => "",
                         
                     ];
             }

@@ -653,6 +653,29 @@ class Siswa extends CI_Controller
         echo json_encode($response);
     }
 
+    function formatTanggalIndo($datetime, $pakejam = null) {
+        // Ubah ke timestamp
+        if($datetime==""){
+            return "";
+        }
+        $timestamp = strtotime($datetime);
+
+        // Array nama bulan dalam Bahasa Indonesia
+        $bulanIndo = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+        $tgl = date('d', $timestamp);
+        $bln = (int)date('m', $timestamp); // jadi integer untuk ambil dari array
+        $thn = date('Y', $timestamp);
+        $jam = $pakejam ? date('H:i', $timestamp) : '';
+        if($pakejam != null){
+            return "$tgl {$bulanIndo[$bln]} $thn, Pukul $jam WIB";
+        }
+        return "$tgl {$bulanIndo[$bln]} $thn";
+    }
+
     public function export_excel()
     {
         // Load library PHPExcel
@@ -673,93 +696,224 @@ class Siswa extends CI_Controller
             ->setKeywords("excel phpexcel php codeigniter")
             ->setCategory("Data Siswa");
 
+        $sheet = $objPHPExcel->getActiveSheet();
+        
+        // HEADER INTRO
+
+        $sheet->mergeCells('A1:F1');
+        $sheet->mergeCells('A2:F2');
+        $sheet->mergeCells('A3:F3');
+        
+
+        // Set style untuk cell yang di-merge
+        $style = array(
+            'font'  => array(
+                'bold'  => true,
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+
+        // Buat style untuk border
+        $Border = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('argb' => 'FF000000'),
+                ),
+            ),
+        );
+        $styleCenter = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        $sheet->getStyle('A1')->applyFromArray($style);
+        $sheet->getStyle('A2')->applyFromArray($style);
+        $sheet->getStyle('A3')->applyFromArray($style);
+
+        $sheet->setCellValue('A1', 'DATA SISWA');
+        $sheet->setCellValue('A2', 'SMP ISLAM DARUT TAUFIQ');
+        $sheet->setCellValue('A3', 'TAHUN AJARAN 2025');
+
         // Add data
         $objPHPExcel->setActiveSheetIndex(0);
-        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'No');
-        $objPHPExcel->getActiveSheet()->setCellValue('B1', 'Username');
-        $objPHPExcel->getActiveSheet()->setCellValue('C1', 'NIS');
-        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'NISN');
-        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'Nama Siswa');
-        $objPHPExcel->getActiveSheet()->setCellValue('F1', 'Jenis Kelamin');
-        $objPHPExcel->getActiveSheet()->setCellValue('G1', 'Agama');
-        $objPHPExcel->getActiveSheet()->setCellValue('H1', 'Tempat Lahir');
-        $objPHPExcel->getActiveSheet()->setCellValue('I1', 'Tanggal Lahir');
-        $objPHPExcel->getActiveSheet()->setCellValue('J1', 'Kode Kelas');
-        $objPHPExcel->getActiveSheet()->setCellValue('K1', 'No. Absen');
-        $objPHPExcel->getActiveSheet()->setCellValue('L1', 'Tahun Angkatan');
-        $objPHPExcel->getActiveSheet()->setCellValue('M1', 'Anak ke-');
-        $objPHPExcel->getActiveSheet()->setCellValue('N1', 'Jumlah Saudara');
-        $objPHPExcel->getActiveSheet()->setCellValue('O1', 'Hobi');
-        $objPHPExcel->getActiveSheet()->setCellValue('P1', 'Cita-cita');
-        $objPHPExcel->getActiveSheet()->setCellValue('Q1', 'No. HP');
-        $objPHPExcel->getActiveSheet()->setCellValue('R1', 'Alamat');
-        $objPHPExcel->getActiveSheet()->setCellValue('S1', 'Kelurahan');
-        $objPHPExcel->getActiveSheet()->setCellValue('T1', 'Kecamatan');
-        $objPHPExcel->getActiveSheet()->setCellValue('U1', 'Kabupaten');
-        $objPHPExcel->getActiveSheet()->setCellValue('V1', 'Provinsi');
-        $objPHPExcel->getActiveSheet()->setCellValue('W1', 'Jarak ke Sekolah');
-        $objPHPExcel->getActiveSheet()->setCellValue('X1', 'Transportasi');
-        $objPHPExcel->getActiveSheet()->setCellValue('Y1', 'Tinggal');
-        $objPHPExcel->getActiveSheet()->setCellValue('Z1', 'Nama Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AA1', 'NIK Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AB1', 'Tempat Lahir Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AC1', 'Tanggal Lahir Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AD1', 'Agama Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AE1', 'Pendidikan Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AF1', 'Pekerjaan Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AG1', 'Penghasilan Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AH1', 'Alamat Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AI1', 'Kelurahan Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AJ1', 'Kecamatan Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AK1', 'Kabupaten Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AL1', 'Provinsi Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AM1', 'No. HP Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AN1', 'Status Ayah');
-        $objPHPExcel->getActiveSheet()->setCellValue('AO1', 'Nama Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AP1', 'NIK Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AQ1', 'Tempat Lahir Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AR1', 'Tanggal Lahir Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AS1', 'Agama Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AT1', 'Pendidikan Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AU1', 'Pekerjaan Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AV1', 'Penghasilan Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AW1', 'Alamat Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AX1', 'Kelurahan Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AY1', 'Kecamatan Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('AZ1', 'Kabupaten Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('BA1', 'Provinsi Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('BB1', 'No. HP Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('BC1', 'Status Ibu');
-        $objPHPExcel->getActiveSheet()->setCellValue('BD1', 'Nama Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BE1', 'NIK Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BF1', 'Tempat Lahir Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BG1', 'Tanggal Lahir Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BH1', 'Agama Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BI1', 'Pendidikan Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BJ1', 'Pekerjaan Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BK1', 'Penghasilan Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BL1', 'Alamat Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BM1', 'Kelurahan Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BN1', 'Kecamatan Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BO1', 'Kabupaten Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BP1', 'Provinsi Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BQ1', 'No. HP Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BR1', 'Status Wali');
-        $objPHPExcel->getActiveSheet()->setCellValue('BS1', 'Golongan Darah');
-        $objPHPExcel->getActiveSheet()->setCellValue('BT1', 'Penyakit');
-        $objPHPExcel->getActiveSheet()->setCellValue('BU1', 'Kelainan Jasmani');
-        $objPHPExcel->getActiveSheet()->setCellValue('BV1', 'Tinggi Badan');
-        $objPHPExcel->getActiveSheet()->setCellValue('BW1', 'Berat Badan');
-        $objPHPExcel->getActiveSheet()->setCellValue('BX1', 'Asal Sekolah');
-        $objPHPExcel->getActiveSheet()->setCellValue('BY1', 'No. Ijazah');
-        $objPHPExcel->getActiveSheet()->setCellValue('BZ1', 'No. SKHU');
-        $objPHPExcel->getActiveSheet()->setCellValue('CA1', 'Tanggal Lulus');
-        $objPHPExcel->getActiveSheet()->setCellValue('CB1', 'Kesenian');
-        $objPHPExcel->getActiveSheet()->setCellValue('CC1', 'Olahraga');
-        $objPHPExcel->getActiveSheet()->setCellValue('CD1', 'Organisasi');
-        $objPHPExcel->getActiveSheet()->setCellValue('CE1', 'Lain-lain');
+        $objPHPExcel->getActiveSheet()->setCellValue('A5', 'No');
+        $objPHPExcel->getActiveSheet()->setCellValue('B5', 'Username');
+        $objPHPExcel->getActiveSheet()->setCellValue('C5', 'NIS');
+        $objPHPExcel->getActiveSheet()->setCellValue('D5', 'NISN');
+        $objPHPExcel->getActiveSheet()->setCellValue('E5', 'Nama Siswa');
+        $objPHPExcel->getActiveSheet()->setCellValue('F5', 'Jenis Kelamin');
+        $objPHPExcel->getActiveSheet()->setCellValue('G5', 'Agama');
+        $objPHPExcel->getActiveSheet()->setCellValue('H5', 'Tempat Lahir');
+        $objPHPExcel->getActiveSheet()->setCellValue('I5', 'Tanggal Lahir');
+        $objPHPExcel->getActiveSheet()->setCellValue('J5', 'Kode Kelas');
+        $objPHPExcel->getActiveSheet()->setCellValue('K5', 'No. Absen');
+        $objPHPExcel->getActiveSheet()->setCellValue('L5', 'Tahun Angkatan');
+        $objPHPExcel->getActiveSheet()->setCellValue('M5', 'Anak ke-');
+        $objPHPExcel->getActiveSheet()->setCellValue('N5', 'Jumlah Saudara');
+        $objPHPExcel->getActiveSheet()->setCellValue('O5', 'Hobi');
+        $objPHPExcel->getActiveSheet()->setCellValue('P5', 'Cita-cita');
+        $objPHPExcel->getActiveSheet()->setCellValue('Q5', 'No. HP');
+        $objPHPExcel->getActiveSheet()->setCellValue('R5', 'Alamat');
+        $objPHPExcel->getActiveSheet()->setCellValue('S5', 'Kelurahan');
+        $objPHPExcel->getActiveSheet()->setCellValue('T5', 'Kecamatan');
+        $objPHPExcel->getActiveSheet()->setCellValue('U5', 'Kabupaten');
+        $objPHPExcel->getActiveSheet()->setCellValue('V5', 'Provinsi');
+        $objPHPExcel->getActiveSheet()->setCellValue('W5', 'Jarak ke Sekolah');
+        $objPHPExcel->getActiveSheet()->setCellValue('X5', 'Transportasi');
+        $objPHPExcel->getActiveSheet()->setCellValue('Y5', 'Tinggal');
+        $objPHPExcel->getActiveSheet()->setCellValue('Z5', 'Nama Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AA5', 'NIK Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AB5', 'Tempat Lahir Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AC5', 'Tanggal Lahir Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AD5', 'Agama Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AE5', 'Pendidikan Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AF5', 'Pekerjaan Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AG5', 'Penghasilan Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AH5', 'Alamat Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AI5', 'Kelurahan Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AJ5', 'Kecamatan Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AK5', 'Kabupaten Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AL5', 'Provinsi Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AM5', 'No. HP Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AN5', 'Status Ayah');
+        $objPHPExcel->getActiveSheet()->setCellValue('AO5', 'Nama Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AP5', 'NIK Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AQ5', 'Tempat Lahir Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AR5', 'Tanggal Lahir Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AS5', 'Agama Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AT5', 'Pendidikan Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AU5', 'Pekerjaan Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AV5', 'Penghasilan Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AW5', 'Alamat Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AX5', 'Kelurahan Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AY5', 'Kecamatan Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('AZ5', 'Kabupaten Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('BA5', 'Provinsi Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('BB5', 'No. HP Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('BC5', 'Status Ibu');
+        $objPHPExcel->getActiveSheet()->setCellValue('BD5', 'Nama Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BE5', 'NIK Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BF5', 'Tempat Lahir Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BG5', 'Tanggal Lahir Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BH5', 'Agama Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BI5', 'Pendidikan Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BJ5', 'Pekerjaan Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BK5', 'Penghasilan Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BL5', 'Alamat Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BM5', 'Kelurahan Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BN5', 'Kecamatan Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BO5', 'Kabupaten Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BP5', 'Provinsi Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BQ5', 'No. HP Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BR5', 'Status Wali');
+        $objPHPExcel->getActiveSheet()->setCellValue('BS5', 'Golongan Darah');
+        $objPHPExcel->getActiveSheet()->setCellValue('BT5', 'Penyakit');
+        $objPHPExcel->getActiveSheet()->setCellValue('BU5', 'Kelainan Jasmani');
+        $objPHPExcel->getActiveSheet()->setCellValue('BV5', 'Tinggi Badan');
+        $objPHPExcel->getActiveSheet()->setCellValue('BW5', 'Berat Badan');
+        $objPHPExcel->getActiveSheet()->setCellValue('BX5', 'Asal Sekolah');
+        $objPHPExcel->getActiveSheet()->setCellValue('BY5', 'No. Ijazah');
+        $objPHPExcel->getActiveSheet()->setCellValue('BZ5', 'No. SKHU');
+        $objPHPExcel->getActiveSheet()->setCellValue('CA5', 'Tanggal Lulus');
+        $objPHPExcel->getActiveSheet()->setCellValue('CB5', 'Kesenian');
+        $objPHPExcel->getActiveSheet()->setCellValue('CC5', 'Olahraga');
+        $objPHPExcel->getActiveSheet()->setCellValue('CD5', 'Organisasi');
+        $objPHPExcel->getActiveSheet()->setCellValue('CE5', 'Lain-lain');
 
-        $row = 2; // Mulai dari baris kedua untuk data
+
+        $sheet->getColumnDimension('A')->setWidth(10);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+        $sheet->getColumnDimension('L')->setAutoSize(true);
+        $sheet->getColumnDimension('M')->setAutoSize(true);
+        $sheet->getColumnDimension('N')->setAutoSize(true);
+        $sheet->getColumnDimension('O')->setAutoSize(true);
+        $sheet->getColumnDimension('P')->setAutoSize(true);
+        $sheet->getColumnDimension('Q')->setAutoSize(true);
+        $sheet->getColumnDimension('R')->setAutoSize(true);
+        $sheet->getColumnDimension('S')->setAutoSize(true);
+        $sheet->getColumnDimension('T')->setAutoSize(true);
+        $sheet->getColumnDimension('U')->setAutoSize(true);
+        $sheet->getColumnDimension('V')->setAutoSize(true);
+        $sheet->getColumnDimension('W')->setAutoSize(true);
+        $sheet->getColumnDimension('X')->setAutoSize(true);
+        $sheet->getColumnDimension('Y')->setAutoSize(true);
+        // Lanjutkan dari kolom Y sampai CE
+        $sheet->getColumnDimension('Y')->setAutoSize(true);
+        $sheet->getColumnDimension('Z')->setAutoSize(true);
+        $sheet->getColumnDimension('AA')->setAutoSize(true);
+        $sheet->getColumnDimension('AB')->setAutoSize(true);
+        $sheet->getColumnDimension('AC')->setAutoSize(true);
+        $sheet->getColumnDimension('AD')->setAutoSize(true);
+        $sheet->getColumnDimension('AE')->setAutoSize(true);
+        $sheet->getColumnDimension('AF')->setAutoSize(true);
+        $sheet->getColumnDimension('AG')->setAutoSize(true);
+        $sheet->getColumnDimension('AH')->setAutoSize(true);
+        $sheet->getColumnDimension('AI')->setAutoSize(true);
+        $sheet->getColumnDimension('AJ')->setAutoSize(true);
+        $sheet->getColumnDimension('AK')->setAutoSize(true);
+        $sheet->getColumnDimension('AL')->setAutoSize(true);
+        $sheet->getColumnDimension('AM')->setAutoSize(true);
+        $sheet->getColumnDimension('AN')->setAutoSize(true);
+        $sheet->getColumnDimension('AO')->setAutoSize(true);
+        $sheet->getColumnDimension('AP')->setAutoSize(true);
+        $sheet->getColumnDimension('AQ')->setAutoSize(true);
+        $sheet->getColumnDimension('AR')->setAutoSize(true);
+        $sheet->getColumnDimension('AS')->setAutoSize(true);
+        $sheet->getColumnDimension('AT')->setAutoSize(true);
+        $sheet->getColumnDimension('AU')->setAutoSize(true);
+        $sheet->getColumnDimension('AV')->setAutoSize(true);
+        $sheet->getColumnDimension('AW')->setAutoSize(true);
+        $sheet->getColumnDimension('AX')->setAutoSize(true);
+        $sheet->getColumnDimension('AY')->setAutoSize(true);
+        $sheet->getColumnDimension('AZ')->setAutoSize(true);
+        $sheet->getColumnDimension('BA')->setAutoSize(true);
+        $sheet->getColumnDimension('BB')->setAutoSize(true);
+        $sheet->getColumnDimension('BC')->setAutoSize(true);
+        $sheet->getColumnDimension('BD')->setAutoSize(true);
+        $sheet->getColumnDimension('BE')->setAutoSize(true);
+        $sheet->getColumnDimension('BF')->setAutoSize(true);
+        $sheet->getColumnDimension('BG')->setAutoSize(true);
+        $sheet->getColumnDimension('BH')->setAutoSize(true);
+        $sheet->getColumnDimension('BI')->setAutoSize(true);
+        $sheet->getColumnDimension('BJ')->setAutoSize(true);
+        $sheet->getColumnDimension('BK')->setAutoSize(true);
+        $sheet->getColumnDimension('BL')->setAutoSize(true);
+        $sheet->getColumnDimension('BM')->setAutoSize(true);
+        $sheet->getColumnDimension('BN')->setAutoSize(true);
+        $sheet->getColumnDimension('BO')->setAutoSize(true);
+        $sheet->getColumnDimension('BP')->setAutoSize(true);
+        $sheet->getColumnDimension('BQ')->setAutoSize(true);
+        $sheet->getColumnDimension('BR')->setAutoSize(true);
+        $sheet->getColumnDimension('BS')->setAutoSize(true);
+        $sheet->getColumnDimension('BT')->setAutoSize(true);
+        $sheet->getColumnDimension('BU')->setAutoSize(true);
+        $sheet->getColumnDimension('BV')->setAutoSize(true);
+        $sheet->getColumnDimension('BW')->setAutoSize(true);
+        $sheet->getColumnDimension('BX')->setAutoSize(true);
+        $sheet->getColumnDimension('BY')->setAutoSize(true);
+        $sheet->getColumnDimension('BZ')->setAutoSize(true);
+        $sheet->getColumnDimension('CA')->setAutoSize(true);
+        $sheet->getColumnDimension('CB')->setAutoSize(true);
+        $sheet->getColumnDimension('CC')->setAutoSize(true);
+        $sheet->getColumnDimension('CD')->setAutoSize(true);
+        $sheet->getColumnDimension('CE')->setAutoSize(true);
+
+
+        $row = 6; // Mulai dari baris kedua untuk data
         $no = 1; // Inisialisasi nomor urut
         foreach ($data as $row_data) {
             $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
@@ -770,7 +924,7 @@ class Siswa extends CI_Controller
             $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $row_data['jeniskelamin']);
             $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $row_data['agama']);
             $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, $row_data['tempatlahir']);
-            $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, $row_data['tanggallahir']);
+            $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, $this->formatTanggalIndo($row_data['tanggallahir']));
             $objPHPExcel->getActiveSheet()->setCellValue('J' . $row, $row_data['kode_kelas']);
             $objPHPExcel->getActiveSheet()->setCellValue('K' . $row, $row_data['no_absen']);
             $objPHPExcel->getActiveSheet()->setCellValue('L' . $row, $row_data['tahun_angkatan']);
@@ -790,7 +944,7 @@ class Siswa extends CI_Controller
             $objPHPExcel->getActiveSheet()->setCellValue('Z' . $row, $row_data['ayah_nama']);
             $objPHPExcel->getActiveSheet()->setCellValue('AA' . $row, $row_data['ayah_nik']);
             $objPHPExcel->getActiveSheet()->setCellValue('AB' . $row, $row_data['ayah_tempatlahir']);
-            $objPHPExcel->getActiveSheet()->setCellValue('AC' . $row, $row_data['ayah_tanggallahir']);
+            $objPHPExcel->getActiveSheet()->setCellValue('AC' . $row, $this->formatTanggalIndo($row_data['ayah_tanggallahir']));
             $objPHPExcel->getActiveSheet()->setCellValue('AD' . $row, $row_data['ayah_agama']);
             $objPHPExcel->getActiveSheet()->setCellValue('AE' . $row, $row_data['ayah_pendidikan']);
             $objPHPExcel->getActiveSheet()->setCellValue('AF' . $row, $row_data['ayah_pekerjaan']);
@@ -805,7 +959,7 @@ class Siswa extends CI_Controller
             $objPHPExcel->getActiveSheet()->setCellValue('AO' . $row, $row_data['ibu_nama']);
             $objPHPExcel->getActiveSheet()->setCellValue('AP' . $row, $row_data['ibu_nik']);
             $objPHPExcel->getActiveSheet()->setCellValue('AQ' . $row, $row_data['ibu_tempatlahir']);
-            $objPHPExcel->getActiveSheet()->setCellValue('AR' . $row, $row_data['ibu_tanggallahir']);
+            $objPHPExcel->getActiveSheet()->setCellValue('AR' . $row, $this->formatTanggalIndo($row_data['ibu_tanggallahir']));
             $objPHPExcel->getActiveSheet()->setCellValue('AS' . $row, $row_data['ibu_agama']);
             $objPHPExcel->getActiveSheet()->setCellValue('AT' . $row, $row_data['ibu_pendidikan']);
             $objPHPExcel->getActiveSheet()->setCellValue('AU' . $row, $row_data['ibu_pekerjaan']);
@@ -820,7 +974,7 @@ class Siswa extends CI_Controller
             $objPHPExcel->getActiveSheet()->setCellValue('BD' . $row, $row_data['wali_nama']);
             $objPHPExcel->getActiveSheet()->setCellValue('BE' . $row, $row_data['wali_nik']);
             $objPHPExcel->getActiveSheet()->setCellValue('BF' . $row, $row_data['wali_tempatlahir']);
-            $objPHPExcel->getActiveSheet()->setCellValue('BG' . $row, $row_data['wali_tanggallahir']);
+            $objPHPExcel->getActiveSheet()->setCellValue('BG' . $row, $this->formatTanggalIndo($row_data['wali_tanggallahir']));
             $objPHPExcel->getActiveSheet()->setCellValue('BH' . $row, $row_data['wali_agama']);
             $objPHPExcel->getActiveSheet()->setCellValue('BI' . $row, $row_data['wali_pendidikan']);
             $objPHPExcel->getActiveSheet()->setCellValue('BJ' . $row, $row_data['wali_pekerjaan']);
@@ -850,6 +1004,34 @@ class Siswa extends CI_Controller
             $no++; // Tambahkan nomor urut
 
         }
+        $sheet->getStyle('A5:CE' . ($row-1))->applyFromArray($Border);
+
+
+        $row = $row+2;
+        $sheet->setCellValue('A' . $row, 'Di Download Pada :  ' . $this->formatTanggalIndo(date('Y-m-d H:i:s'), "dgnjam"));
+
+        // Style untuk header (baris 5)
+        $headerStyle = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array('rgb' => '4472C4') // Warna biru
+            ),
+            'font' => array(
+                'bold' => true,
+                'color' => array('rgb' => 'FFFFFF') // Warna teks putih
+            ),
+            'alignment' => array(
+                'wrap' => true, // Aktifkan wrap text
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+            )
+        );
+
+        // Terapkan style ke header
+        $sheet->getStyle('A5:CE5')->applyFromArray($headerStyle);
+
+        // Atur tinggi baris header
+        $sheet->getRowDimension(5)->setRowHeight(30); // Atur tinggi 30 point
 
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Data Siswa');

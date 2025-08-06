@@ -522,6 +522,31 @@ class Ptk extends CI_Controller
         echo json_encode($response);
     }
 
+    function formatTanggalIndo($datetime, $pakejam = null) {
+        // Ubah ke timestamp
+        if($datetime==""){
+            return "";
+        }
+        $timestamp = strtotime($datetime);
+
+        // Array nama bulan dalam Bahasa Indonesia
+        $bulanIndo = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+        $tgl = date('d', $timestamp);
+        $bln = (int)date('m', $timestamp); // jadi integer untuk ambil dari array
+        $thn = date('Y', $timestamp);
+        $jam = $pakejam ? date('H:i', $timestamp) : '';
+        if($pakejam != null){
+            return "$tgl {$bulanIndo[$bln]} $thn, Pukul $jam WIB";
+        }
+        return "$tgl {$bulanIndo[$bln]} $thn";
+    }
+
+    
+
 
     public function export_excel()
     {
@@ -543,16 +568,97 @@ class Ptk extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0);
         $sheet = $objPHPExcel->getActiveSheet();
 
+        // HEADER INTRO
+
+        $sheet->mergeCells('A1:F1');
+        $sheet->mergeCells('A2:F2');
+        $sheet->mergeCells('A3:F3');
+        
+
+        // Set style untuk cell yang di-merge
+        $style = array(
+            'font'  => array(
+                'bold'  => true,
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+
+        // Buat style untuk border
+        $Border = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('argb' => 'FF000000'),
+                ),
+            ),
+        );
+        $styleCenter = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        $sheet->getStyle('A1')->applyFromArray($style);
+        $sheet->getStyle('A2')->applyFromArray($style);
+        $sheet->getStyle('A3')->applyFromArray($style);
+
+        $sheet->setCellValue('A1', 'DATA PTK');
+        $sheet->setCellValue('A2', 'SMP ISLAM DARUT TAUFIQ');
+        $sheet->setCellValue('A3', 'TAHUN AJARAN 2025');
+
+
         // Header kolom
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama PTK');
-        $sheet->setCellValue('C1', 'NIP');
-        $sheet->setCellValue('D1', 'Email');
-        $sheet->setCellValue('E1', 'Jenis Kelamin');
-        $sheet->setCellValue('F1', 'Mapel');
+        $sheet->setCellValue('A5', 'No');
+        $sheet->setCellValue('B5', 'Nama PTK');
+        $sheet->setCellValue('C5', 'NIP');
+        $sheet->setCellValue('D5', 'Email');
+        $sheet->setCellValue('E5', 'Jenis Kelamin');
+        $sheet->setCellValue('F5', 'Mapel');
+        $sheet->setCellValue('G5', 'NIK');
+        $sheet->setCellValue('H5', 'Agama');
+        $sheet->setCellValue('I5', 'Tempat dan Tanggal Lahir');
+        $sheet->setCellValue('J5', 'Alamat');
+        $sheet->setCellValue('K5', 'No Telp');
+        $sheet->setCellValue('L5', 'Email');
+        $sheet->setCellValue('M5', 'Pendidikan Terakhir');
+        $sheet->setCellValue('N5', 'Nama Institusi');
+        $sheet->setCellValue('O5', 'Jurusan');
+        $sheet->setCellValue('P5', 'Tahun Lulus');
+        $sheet->setCellValue('Q5', 'No. Ijazah');
+        $sheet->setCellValue('R5', 'Status Kepegawaian');
+        $sheet->setCellValue('S5', 'Tanggal Mulai Pengangkatan (TMT)');
+        $sheet->setCellValue('T5', 'Jabatan / Tugas Tambahan');
+        $sheet->setCellValue('U5', 'Status');
+        $sheet->setCellValue('V5', 'No. Rekening');
+
+        $sheet->getColumnDimension('A')->setWidth(10);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+        $sheet->getColumnDimension('L')->setAutoSize(true);
+        $sheet->getColumnDimension('M')->setAutoSize(true);
+        $sheet->getColumnDimension('N')->setAutoSize(true);
+        $sheet->getColumnDimension('O')->setAutoSize(true);
+        $sheet->getColumnDimension('P')->setAutoSize(true);
+        $sheet->getColumnDimension('Q')->setAutoSize(true);
+        $sheet->getColumnDimension('R')->setAutoSize(true);
+        $sheet->getColumnDimension('S')->setAutoSize(true);
+        $sheet->getColumnDimension('T')->setAutoSize(true);
+        $sheet->getColumnDimension('U')->setAutoSize(true);
+        $sheet->getColumnDimension('V')->setAutoSize(true);
 
         // Isi data
-        $row = 2;
+        $row = 6;
         $no = 1;
         foreach ($data as $d) {
             $sheet->setCellValue('A' . $row, $no++);
@@ -561,11 +667,65 @@ class Ptk extends CI_Controller
             $sheet->setCellValue('D' . $row, $d['email']);
             $sheet->setCellValue('E' . $row, $d['jeniskelamin']);
             $sheet->setCellValue('F' . $row, $d['nama_mapel']); // sesuaikan jika nama mapel gabung tabel
+            $sheet->setCellValue('G' . $row, $d['nik']);
+            $sheet->setCellValue('H' . $row, $d['agama']);
+            $sheet->setCellValue('I' . $row, $d['tempatlahir_ptk'].", ". $this->formatTanggalIndo($d['tanggallahir_ptk']));
+            $sheet->setCellValue('J' . $row, $d['ptk_alamat']. ", ". $d['kelurahan']. ", ". $d['kecamatan']. ", ". $d['kabupaten']. ", ". $d['provinsi']);
+            $sheet->setCellValue('K' . $row, $d['no_telepon']);
+            $sheet->setCellValue('L' . $row, $d['email']);
+            $sheet->setCellValue('M' . $row, $d['pendidikan_terakhir']);
+            $sheet->setCellValue('N' . $row, $d['nama_institusi_pendidikan']);
+            $sheet->setCellValue('O' . $row, $d['jurusan']);
+            $sheet->setCellValue('P' . $row, $d['tahun_lulus']);
+            $sheet->setCellValue('Q' . $row, $d['ijazah_transkrip']);
+            $sheet->setCellValue('R' . $row, $d['status_kepegawaian']);
+            $sheet->setCellValue('S' . $row, $this->formatTanggalIndo($d['tmt']));
+            $sheet->setCellValue('T' . $row, $d['jabatan_tambahan']);
+            $sheet->setCellValue('U' . $row, $d['status_aktif']);
+            $sheet->setCellValue('V' . $row, $d['nomor_rekening']);
             $row++;
         }
 
+        $sheet->getStyle('A5:V' . ($row-1))->applyFromArray($Border);
+        $sheet->getStyle('A5:A' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('E5:E' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('H5:H' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('M5:M' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('P5:P' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('R5:R' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('S5:S' . ($row-1))->applyFromArray($styleCenter);
+        $sheet->getStyle('U5:U' . ($row-1))->applyFromArray($styleCenter);
+
+        $row = $row+2;
+        $sheet->setCellValue('A' . $row, 'Di Download Pada :  ' . $this->formatTanggalIndo(date('Y-m-d H:i:s'), "dgnjam"));
+
+        // Style untuk header (baris 5)
+        $headerStyle = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array('rgb' => '4472C4') // Warna biru
+            ),
+            'font' => array(
+                'bold' => true,
+                'color' => array('rgb' => 'FFFFFF') // Warna teks putih
+            ),
+            'alignment' => array(
+                'wrap' => true, // Aktifkan wrap text
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+            )
+        );
+
+        // Terapkan style ke header
+        $sheet->getStyle('A5:V5')->applyFromArray($headerStyle);
+
+        // Atur tinggi baris header
+        $sheet->getRowDimension(5)->setRowHeight(30); // Atur tinggi 30 point
+
         // Nama file
         $filename = "Data_PTK_" . date('YmdHis') . ".xlsx";
+
+        
 
         // Output ke browser
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

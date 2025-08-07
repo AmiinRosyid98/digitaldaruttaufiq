@@ -138,7 +138,124 @@ class Landing extends CI_Controller
             'pagination_books'      => $this->pagination->create_links()
         );
 
-        $this->load->view('landing/' . $view, $data);
+        // $this->load->view('landing/' . $view, $data);
+        $this->load->view('landing/halaman_landing_new', $data);
+
+    }
+
+    public function login(){
+        $this->load->view('landing/login');
+    }
+
+    public function new($page = 1)
+    {
+        // var_dump("tes");die;
+        // Ambil data site untuk mendapatkan NPSN
+        $site_data = $this->Model_landing->get_site()->result();
+        $kode_sekolah = isset($site_data[0]->npsn) ? $site_data[0]->npsn : null;
+
+        // Periksa apakah NPSN tersedia
+        if (!$kode_sekolah) {
+            $this->showLicenseErrorPage('Data NPSN tidak tersedia atau tidak valid.');
+            exit;
+        }
+
+        // Cek lisensi melalui API eksternal
+        $update_url = 'https://lisensi.saifudin.web.id/lisensi_check/cek_kode_lisensi';
+        $post_data = array('kode_sekolah' => $kode_sekolah);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $update_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // Timeout after 10 seconds
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            $this->showLicenseErrorPage('Gagal terhubung ke server lisensi: ' . htmlspecialchars(curl_error($ch), ENT_QUOTES, 'UTF-8'), true);
+            curl_close($ch);
+            exit;
+        }
+
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($http_code >= 400) {
+            $this->showLicenseErrorPage('Kode lisensi tidak valid atau tidak ditemukan.', true);
+            exit;
+        }
+
+        $result = json_decode($response, true);
+        if (!$result || !isset($result['status']) || $result['status'] !== 'success') {
+            $this->showLicenseErrorPage('Kode lisensi tidak valid atau tidak ditemukan.', true);
+            exit;
+        }
+
+        // Lanjutkan proses halaman jika lisensi valid
+        $view = $this->agent->is_mobile() ? 'halaman_mobile' : 'halaman_landing';
+
+        $config['base_url'] = base_url('landing/index');
+        $config['total_rows'] = $this->Model_landing->count_all_books();
+        $config['per_page'] = 6;
+        $config['uri_segment'] = 3;
+        $config['use_page_numbers'] = TRUE;
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['full_tag_open'] = '<div class="pagination">';
+        $config['full_tag_close'] = '</div>';
+        $config['num_tag_open'] = '<span class="page-link">';
+        $config['num_tag_close'] = '</span>';
+        $config['cur_tag_open'] = '<span class="page-link current">';
+        $config['cur_tag_close'] = '</span>';
+        $config['prev_tag_open'] = '<span class="page-link">';
+        $config['prev_tag_close'] = '</span>';
+        $config['next_tag_open'] = '<span class="page-link">';
+        $config['next_tag_close'] = '</span>';
+        $config['first_tag_open'] = '<span class="page-link">';
+        $config['first_tag_close'] = '</span>';
+        $config['last_tag_open'] = '<span class="page-link">';
+        $config['last_tag_close'] = '</span>';
+
+        $this->pagination->initialize($config);
+        $offset = ($page - 1) * $config['per_page'];
+        $books = $this->Model_landing->get_books($config['per_page'], $offset);
+
+        $total_siswa    = $this->Model_landing->total_siswa();
+        $total_guru     = $this->Model_landing->total_guru();
+        $total_kelas    = $this->Model_landing->total_kelas();
+        $total_alumni   = $this->Model_landing->total_alumni();
+        $hobby_data     = $this->Model_landing->get_hobby_stats();
+
+        $data = array(
+            'data_site'             => $site_data,
+            'versi'                 => $this->Model_landing->get_version()->result(),
+            'pengumumankelulusan'   => $this->Model_landing->get_site_with_status()->result(),
+            'portalppdb'            => $this->Model_landing->get_portalppdb_with_status()->result(),
+            'portalkelulusan'       => $this->Model_landing->get_portalkelulusan_with_status()->result(),
+            'berita'                => $this->Model_landing->get_berita()->result(),
+            'dataguru'              => $this->Model_landing->get_guru()->result(),
+            'link_dinamis'          => $this->Model_landing->get_link_dinamis()->result(),
+
+            'hasil_pencarian'       => null,
+            'pagination_links'      => $this->pagination->create_links(),
+            'page'                  => $page,
+            "total_siswa"           => $total_siswa,
+            "total_guru"            => $total_guru,
+            "total_kelas"           => $total_kelas,
+            "total_alumni"          => $total_alumni,
+            'hobby_stats'           => [
+                'olahraga' => $hobby_data['hobbies'],
+                'kesenian' => $hobby_data['talents']
+            ],
+            'books'                 => $books,
+            'pagination_books'      => $this->pagination->create_links()
+        );
+
+        $this->load->view('landing/halaman_landing_new', $data);
     }
 
 

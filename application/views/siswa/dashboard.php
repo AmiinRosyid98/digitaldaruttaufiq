@@ -42,7 +42,7 @@
                            <div class="card-body">
                               <marquee behavior="scroll" direction="left" scrollamount="4">
                                  <p class="card-text">
-                                    Halo, Selamat datang di dashboard SmartSchool, tempat di mana kamu dapat mengeksplorasi dunia pendidikan dengan lebih menyenangkan dan interaktif. Di sini, kamu dapat melihat jadwal pelajaran, tugas yang harus diselesaikan, informasi tentang kegiatan sekolah, dan masih banyak lagi.
+                                    Halo, Selamat datang di dashboard SISMA, tempat di mana kamu dapat mengeksplorasi dunia pendidikan dengan lebih menyenangkan dan interaktif. Di sini, kamu dapat melihat jadwal pelajaran, tugas yang harus diselesaikan, informasi tentang kegiatan sekolah, dan masih banyak lagi.
                                  </p>
                               </marquee>
                            </div>

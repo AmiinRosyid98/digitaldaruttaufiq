@@ -126,6 +126,10 @@
                                     </div>
                                 </div>
                                 <div class="card" style="background-image: url('<?php echo base_url('assets/admin/bg-section-2_.png'); ?>'); background-size: cover; opacity: 0.9;">
+                                    
+                                <?php $true = false ;?>
+
+                                <?php if($true){ ?>
                                     <div class="card-header" style="padding: 15px; border-bottom: 2px solid #fff; background-color: #01687E;">
                                         <h5 class=" mb-0" style="color: #fff;">Versi saat ini: <?php echo $current_version; ?></h5>
                                         <p id="latestVersion" style="display: none; color: #fff;">Versi terbaru: <?php echo isset($latest_version) ? $latest_version : 'Belum diperiksa'; ?></p>
@@ -136,6 +140,8 @@
                                             </a>
                                         </div>
                                     </div>
+                                    
+                                    
                                     <div class="card-body" style="padding: 10px;">
                                         <h5 class="card-title" style="font-weight: bold; color: #333;">Layanan Bantuan</h5>
                                         <p class="card-text" style="color: #555;">Hubungi kami melalui WhatsApp untuk pertanyaan lebih lanjut.</p>
@@ -143,6 +149,7 @@
                                             <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
                                         </a>
                                     </div>
+                                <?php } ?>
                                     <div class="card-body" style="padding: 10px;">
                                         <!-- Bagian baru untuk fitur "Apa yang Baru pada Versi Ini" -->
                                         <h5 style="font-weight: bold; margin-top: 0px; color: #099A56;"><i class="fa-solid fa-infinity"></i> Apa yang Baru pada Versi Ini</h5>
@@ -152,13 +159,17 @@
                                             <li>Pemisahan data siswa aktif dan alumni</li>
                                             <li>Siswa Dapat Mengerjakan Tugas</li>
                                             <li>Penyempurnaan Fitur E-Dokumen</li>
+                                            <li>Fitur Download E-Raport</li>
+                                            <li>Fitur Payment Gateway</li>
                                         </ul>
                                     </div>
+                                    <!-- 
+                                    zxczxczxczx
                                     <div class="card-footer" style="padding: 10px; border-top: 2px solid #fff;">
                                         <a href="https://update.excode.my.id/assets/Manual-Book-SMARTSCHOOL.pdf" target="_blank" class="btn btn-danger" style="font-size: 15px; font-weight: bold;">
                                             <i class="fa-regular fa-lightbulb"></i> Buku Panduan
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 

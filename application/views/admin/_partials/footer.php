@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="https://xcode.co.id" target="_blank">Xcode.co.id</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <?= date('Y') ?> <a href="#" target="_blank">SISMA</a>.</strong> All rights reserved.
 </footer>
 </div> <!-- Ini menutup <div class="wrapper"> dari AdminLTE -->
 

@@ -240,14 +240,14 @@
             </ul>
 
 
-            <ul class="nav nav-treeview">
+            <!-- <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="<?php echo base_url() ?>admin/absensi/rekapsiswa" class="nav-link <?php echo ($this->uri->segment(3) == "rekapsiswa") ? "active" : ""; ?>">
                         <i class="fas fa-print nav-icon text-default"></i>
                         <p>Rekap Absensi Siswa</p>
                     </a>
                 </li>
-            </ul>
+            </ul> -->
 
 
             <ul class="nav nav-treeview">

@@ -2,7 +2,7 @@
 <!-- Brand Logo -->
 <a href="index3.html" class="brand-link">
 <img src="<?php echo base_url() ?>assets/web/<?php echo $profilsekolah['logo'] ?? ''; ?>" class="brand-image">
-<span class="brand-text font-weight-light-bold">SMARTSCHOOL</span>
+<span class="brand-text font-weight-light-bold">SISMA</span>
 </a>
 
 <!-- Sidebar -->

@@ -69,7 +69,8 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="<?php echo base_url() ?>upload/filebuku/<?php echo $buku['file_buku']; ?>" target="_blank">
-                                                            <img src="https://cdn.excode.my.id/assets/material/pdf.png" class="card-img-top" alt="E-PERPUSTAKAAN Logo" style="width: 100px; height: 100px;">
+                                                            <!-- <img src="https://cdn.excode.my.id/assets/material/pdf.png" class="card-img-top" alt="E-PERPUSTAKAAN Logo" style="width: 100px; height: 100px;"> -->
+                                                            <i class="far fa-file-pdf fa-2x" style="color: red;"></i>
                                                         </a>
                                                     </td>
                                                     <td class="text-center"><?php echo date('d-m-Y H:i:s', strtotime($buku['timestamp_buku'])); ?></td>

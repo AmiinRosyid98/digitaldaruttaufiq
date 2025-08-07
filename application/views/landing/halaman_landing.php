@@ -6,31 +6,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $res->nama_lembaga; ?> - SmartSchool</title>
+    <title><?php echo $res->nama_lembaga; ?> - SISMA</title>
     <!-- SEO Meta Tags -->
     <!-- *
     ----------------------------------------------------------------------------------
-    SMARTSCHOOL APLICATION
+    SISMA APLICATION
     Pembuat Original Hainur Cahya Utama
     Beli Produk resmi dan original melalui whatsapp - 082183930485
     Note : Aplikasi Bajakan Tidak Didukung Fitur Update Secara Berkala 
     ----------------------------------------------------------------------------------
     * -->
-    <meta name="description" content="Aplikasi SMARTSCHOOL <?php echo $res->nama_lembaga; ?> - Sistem Manajemen Sekolah Terpadu">
-    <meta name="keywords" content="smartschool, <?php echo $res->nama_lembaga; ?>, aplikasi sekolah digital, e-learning, manajemen sekolah">
+    <meta name="description" content="Aplikasi SISMA <?php echo $res->nama_lembaga; ?> - Sistem Manajemen Sekolah Terpadu">
+    <meta name="keywords" content="SISMA, <?php echo $res->nama_lembaga; ?>, aplikasi sekolah digital, e-learning, manajemen sekolah">
     <meta name="author" content="<?php echo $res->nama_lembaga; ?>">
 
     <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="<?php echo $res->nama_lembaga; ?> - SmartSchool">
-    <meta property="og:description" content="Sistem manajemen sekolah berbasis digital untuk mendukung kegiatan belajar mengajar">
+    <meta property="og:title" content="<?php echo $res->nama_lembaga; ?> - SISMA">
+    <meta property="og:description" content="Sistem Informasi Sekolah dan Madrasah  untuk mendukung kegiatan belajar mengajar">
     <meta property="og:image" content="<?php echo base_url() ?>assets/web/<?php echo $res->logo; ?>">
     <meta property="og:url" content="<?php echo current_url(); ?>">
     <meta property="og:type" content="website">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?php echo $res->nama_lembaga; ?> - SmartSchool">
-    <meta name="twitter:description" content="Sistem manajemen sekolah berbasis digital untuk mendukung kegiatan belajar mengajar">
+    <meta name="twitter:title" content="<?php echo $res->nama_lembaga; ?> - SISMA">
+    <meta name="twitter:description" content="Sistem Informasi Sekolah dan Madrasah  untuk mendukung kegiatan belajar mengajar">
     <meta name="twitter:image" content="<?php echo base_url() ?>assets/web/<?php echo $res->logo; ?>">
 
     <!-- Preconnect untuk optimasi -->
@@ -238,8 +238,8 @@
                 <div class="col-lg-8 hero-content" data-aos="fade-right">
                     <h1 class="hero-title mb-4"><?php echo $res->nama_lembaga; ?></h1>
                     <p class="hero-subtitle">
-                        Layanan Manajemen Sekolah Berbasis Digital <br>
-                        <span class="fw-bold">SMARTSCHOOL </span>
+                        Layanan Sistem Informasi Sekolah dan Madrasah <br>
+                        <span class="fw-bold">SISMA </span>
                         <span class="badge bg-light text-primary rounded-pill">
                             Version <?php echo htmlspecialchars($version->current_version, ENT_QUOTES, 'UTF-8'); ?>
                         </span>
@@ -625,7 +625,7 @@
             </div>
 
             <div class="copyright text-center text-white-50">
-                <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($res->nama_lembaga, ENT_QUOTES, 'UTF-8'); ?>. All Rights Reserved. Powered by <a href="#" class="text-white">SmartSchool</a></p>
+                <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($res->nama_lembaga, ENT_QUOTES, 'UTF-8'); ?>. All Rights Reserved. Powered by <a href="#" class="text-white">SISMA</a></p>
             </div>
         </div>
     </footer>

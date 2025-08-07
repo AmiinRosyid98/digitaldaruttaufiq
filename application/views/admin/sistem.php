@@ -61,7 +61,7 @@
                                                 <div class="col-md-4 form-group">
                                                     <label for="npsn" class="font-weight-normal">NPSN</label>
                                                     <input type="hidden" class="form-control" name="id" value="<?php echo isset($profilsekolah['id']) ? $profilsekolah['id'] : ''; ?>">
-                                                    <input type="text" id="npsn" class="form-control" name="npsn" value="<?php echo isset($profilsekolah['npsn']) ? $profilsekolah['npsn'] : ''; ?>">
+                                                    <input type="text" id="npsn" class="form-control" name="npsn" value="<?php echo isset($profilsekolah['npsn']) ? $profilsekolah['npsn'] : ''; ?>" readonly>
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="nama_lembaga" class="font-weight-normal">NAMA LEMBAGA</label>

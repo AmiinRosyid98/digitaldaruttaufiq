@@ -94,7 +94,7 @@
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
-                                                    <img src="https://cdn.excode.my.id/assets/material/Tahun_pelajaran.png" alt="logo Pengguna" style="width:160px; height: 110px;">
+                                                    <!-- <img src="https://cdn.excode.my.id/assets/material/Tahun_pelajaran.png" alt="logo Pengguna" style="width:160px; height: 110px;"> -->
                                                 </div>
 
                                             </div>

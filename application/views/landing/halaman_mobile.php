@@ -297,8 +297,8 @@
     <div class="mobile-login-container">
         <div class="mobile-header">
             <h1><?php echo htmlspecialchars($res->nama_lembaga); ?></h1>
-            <p>Manajemen Sekolah Berbasis Digital</p>
-            <p>SMARTSCHOOL <span class="mobile-badge">Version <?php echo htmlspecialchars($version->current_version); ?></span></p>
+            <p>Sistem Informasi Sekolah dan Madrasah</p>
+            <p>SISMA <span class="mobile-badge">Version <?php echo htmlspecialchars($version->current_version); ?></span></p>
         </div>
 
         <form action="auth/loginsiswa" method="POST">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Instalasi SmartSchool</title>
+    <title>Instalasi SISMA</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
     <style>
         .toast {
@@ -29,9 +29,9 @@
     <div class="bg-white rounded-2xl shadow-lg p-8 max-w-lg w-full">
         <div class="text-center mb-6">
             <!-- Tambahkan logo jika ada -->
-            <!-- <img src="logo.png" alt="SmartSchool" class="mx-auto mb-3 w-16"> -->
-            <h1 class="text-3xl font-bold text-gray-800">Instalasi SmartSchool</h1>
-            <p class="text-gray-600 mt-2">Selamat datang! Silakan lanjutkan untuk menginstal sistem SmartSchool.</p>
+            <!-- <img src="logo.png" alt="SISMA" class="mx-auto mb-3 w-16"> -->
+            <h1 class="text-3xl font-bold text-gray-800">Instalasi SISMA</h1>
+            <p class="text-gray-600 mt-2">Selamat datang! Silakan lanjutkan untuk menginstal sistem SISMA.</p>
         </div>
 
         <?php if (!empty($message)) : ?>
@@ -52,7 +52,7 @@
             <div class="mb-4 text-left">
                 <label class="inline-flex items-start">
                     <input type="checkbox" name="confirm_install" required class="mt-1 mr-2 text-blue-500 focus:ring focus:ring-blue-300" />
-                    <span class="text-sm text-gray-700">Saya menyetujui untuk melanjutkan instalasi database SmartSchool.</span>
+                    <span class="text-sm text-gray-700">Saya menyetujui untuk melanjutkan instalasi database SISMA.</span>
                 </label>
                 <?php echo form_error('confirm_install', '<p class="text-red-500 text-xs italic mt-2">', '</p>'); ?>
             </div>

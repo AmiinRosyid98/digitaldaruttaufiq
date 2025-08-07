@@ -60,7 +60,9 @@
                                                     <li class="list-group-item"><b>NISN</b> <b><a class="float-right text-dark"><?php echo $siswa['nisn']; ?></a></b></li>
                                                 </ul>
                                                 <a href="<?php echo base_url('admin/siswa/cetakbukuinduk/' . $siswa['id_siswa']); ?>" class="btn btn-secondary btn-block">
-                                                    <b><img src="https://cdn.excode.my.id/assets/ba_learning_material.png" alt="Cetak Buku Induk" style="width: 25px; height: 25px;"> Cetak Buku Induk</b>
+                                                    <b>
+                                                        <i class="fas fa-print mr-1"></i> Cetak Buku Induk
+                                                    </b>
                                                 </a>
 
                                             </div>

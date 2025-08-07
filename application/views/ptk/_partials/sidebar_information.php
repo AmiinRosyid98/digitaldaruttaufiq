@@ -1,8 +1,8 @@
 <!-- Brand Logo -->
 <a href="index3.html" class="brand-link">
     <img src="<?php echo base_url() ?>assets/web/<?php echo $profilsekolah['logo'] ?? ''; ?>" class="brand-image">
-    <span class="brand-text" style="font-size: 12px; margin-left: 0px; font-weight: bold;">SMARTSCHOOL VERSI DESKTOP</span><br>
-    <span class="brand-text" style="font-size: 10px; margin-left: 0px;">Manajemen sekolah berbasis digital</span>
+    <span class="brand-text" style="font-size: 12px; margin-left: 0px; font-weight: bold;">SISMA</span><br>
+    <span class="brand-text" style="font-size: 10px; margin-left: 0px;">Sistem Informasi Sekolah dan Madrasah</span>
 </a>
 
 <!-- Sidebar -->

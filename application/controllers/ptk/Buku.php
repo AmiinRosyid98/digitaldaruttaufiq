@@ -80,7 +80,8 @@ class Buku extends CI_Controller
                         'nama_buku'    => $nama_buku,
                         'terbitan'     => $terbitan,
                         'kode_kelas'   => implode(',', $kode_kelas),
-                        'file_buku'    => $file_path
+                        'file_buku'    => $file_path,
+                        'file_size'    => $upload_data['file_size'],
                     );
 
                     // Simpan data ke database

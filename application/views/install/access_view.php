@@ -29,8 +29,8 @@
     <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
         <div class="text-center mb-6">
             <!-- Tambahkan logo jika ingin -->
-            <!-- <img src="logo.png" alt="SmartSchool" class="mx-auto mb-3 w-14"> -->
-            <h1 class="text-2xl font-bold text-gray-800">Akses Instalasi smartschool</h1>
+            <!-- <img src="logo.png" alt="SISMA" class="mx-auto mb-3 w-14"> -->
+            <h1 class="text-2xl font-bold text-gray-800">Akses Instalasi SISMA</h1>
             <p class="text-gray-600 text-sm mt-1">Masukkan Access Key Anda untuk melanjutkan.</p>
         </div>
 

@@ -381,17 +381,17 @@
                               <div class="accordion-item border-0 mb-2">
                                  <h2 class="accordion-header">
                                     <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                       <i class="fas fa-info-circle mr-2"></i> Panduan SMARTSCHOOL
+                                       <i class="fas fa-info-circle mr-2"></i> Panduan SISMA
                                     </button>
                                  </h2>
                                  <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#announcementAccordion">
                                     <div class="accordion-body py-2 small">
-                                       <strong>SMARTSCHOOL</strong> Adalah aplikasi maajemen sekolah ayng dikembangkan untuk semua jenjang sekolah,serta untuk mempermudah proses belajar mengajar di sekolah anda.kami terus berusaha mengembangkan fitur terbaru supaya aplikasi ini dapat sempurna.
+                                       <strong>SISMA</strong> Adalah aplikasi maajemen sekolah ayng dikembangkan untuk semua jenjang sekolah,serta untuk mempermudah proses belajar mengajar di sekolah anda.kami terus berusaha mengembangkan fitur terbaru supaya aplikasi ini dapat sempurna.
                                     </div>
                                  </div>
                               </div>
 
-                              <div class="accordion-item border-0 mb-2">
+                              <!-- <div class="accordion-item border-0 mb-2">
                                  <h2 class="accordion-header">
                                     <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#kehadiransiswa" aria-expanded="false" aria-controls="kehadiransiswa">
                                        <i class="fas fa-user-check mr-2"></i> Kehadiran Siswa
@@ -402,7 +402,7 @@
                                        Setiap Guru Bisa Melihat daftar hadir siswanya berdasarkan kelas yang diajar
                                     </div>
                                  </div>
-                              </div>
+                              </div> -->
 
                               <div class="accordion-item border-0 mb-2">
                                  <h2 class="accordion-header">
@@ -425,7 +425,7 @@
                                  </h2>
                                  <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
                                     <div class="accordion-body py-2 small">
-                                       <strong>SMARTSCHOOL</strong> dirancang untuk memudahkan pembelajaran secara digital, baik berupa pengelolaan pengadministrasian lembaga sampai dengan media pembelajaran berbasis online
+                                       <strong>SISMA</strong> dirancang untuk memudahkan pembelajaran secara digital, baik berupa pengelolaan pengadministrasian lembaga sampai dengan media pembelajaran berbasis online
                                     </div>
                                  </div>
                               </div>

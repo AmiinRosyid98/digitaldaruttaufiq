@@ -11,7 +11,7 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
         <h1 class="text-3xl font-semibold mb-4">Installation Berhasil</h1>
-        <p class="text-gray-700 mb-4">Instalasi SMARTSCHOOL Berhasil,silahkan akses halaman dashboard</p>
+        <p class="text-gray-700 mb-4">Instalasi SISMA Berhasil,silahkan akses halaman dashboard</p>
 
         <a href="<?php echo site_url('/'); ?>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Menuju Aplikasi

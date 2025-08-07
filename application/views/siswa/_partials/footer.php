@@ -1,36 +1,64 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="xcode.co.id">Xcode.co.id</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <?= date('Y') ?> <a href="#" target="_blank">SISMA</a>.</strong> All rights reserved.
 </footer>
 
 
-<!-- REQUIRED SCRIPTS -->
+<script src="<?= base_url('/assets/admin/plugins/jquery/jquery.min.js'); ?>"></script>
 
-<!-- jQuery -->
-<script src="https://cdn.excode.my.id/assets/member/plugins/jquery/jquery.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- jQuery UI (optional, tapi harus setelah jQuery) -->
+<script src="<?= base_url('/assets/admin/plugins/jquery-ui/jquery-ui.min.js'); ?>"></script>
+
 <!-- Bootstrap 4 -->
-<script src="https://cdn.excode.my.id/assets/member/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Sweet alert -->
-<script src="https://cdn.excode.my.id/assets/member/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="<?= base_url('/assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+
+<!-- SweetAlert2 -->
+<script src="<?= base_url('/assets/admin/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
+
 <!-- Toastr -->
-<script src="https://cdn.excode.my.id/assets/member/plugins/toastr/toastr.min.js"></script>
-<!-- Datatable -->
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/jszip/jszip.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script src="https://cdn.excode.my.id/assets/member/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="<?= base_url('/assets/admin/plugins/toastr/toastr.min.js'); ?>"></script>
+
+<!-- DataTables -->
+<script src="<?= base_url('/assets/admin/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/jszip/jszip.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/pdfmake/pdfmake.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/pdfmake/vfs_fonts.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+
+<!-- Bootstrap Colorpicker -->
+<script src="<?= base_url('/assets/admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js'); ?>"></script>
+
 <!-- AdminLTE App -->
-<script src="https://cdn.excode.my.id/assets/member/js/adminlte.min.js"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="<?= base_url('/assets/admin/js/adminlte.min.js'); ?>"></script>
+
+<!-- CKEditor 5 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+
+<!-- Quill Editor -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+
+<!-- Flatpickr (optional, kalau kamu mau datepicker simple) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Moment.js (Wajib sebelum Tempus Dominus) -->
+<script src="<?= base_url('/assets/admin/plugins/moment/moment.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/admin/plugins/moment/locale/id.js'); ?>"></script>
+
+<!-- Tempus Dominus (datepicker bawaan AdminLTE) -->
+<script src="<?= base_url('/assets/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js'); ?>"></script>
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 
 <!-- table -->

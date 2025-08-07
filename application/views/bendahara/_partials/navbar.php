@@ -14,9 +14,9 @@
                 <i class="far fa-user"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-left">
-                <a href="<?php echo base_url() ?>bendahara/profile/updateprofil" class="dropdown-item">
+                <!-- <a href="<?php echo base_url() ?>bendahara/profile/updateprofil" class="dropdown-item">
                     <i class="fas fa-user mr-2"></i> Profil
-                </a>
+                </a> -->
                 <a href="<?php echo base_url() ?>Auth/logout_bendahara" class="dropdown-item">
                     <i class="fas fa-sign-out mr-2"></i> Keluar
                 </a>

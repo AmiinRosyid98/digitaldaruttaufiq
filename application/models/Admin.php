@@ -68,8 +68,6 @@ class Admin extends CI_Model
                         ->order_by('metode_pembayaran.id', 'ASC')->get();
         return $query->result_array();
     }
-
-    
     public function get_kategori_metode_pembayaran()
     {
         $this->db->where("status","Aktif");

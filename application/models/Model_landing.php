@@ -187,7 +187,7 @@ class Model_landing extends CI_Model
     //  Buku Digital
     public function get_books($limit = null, $offset = null)
     {
-        $this->db->select('id_buku, nama_buku, file_buku, timestamp_buku');
+        $this->db->select('id_buku, nama_buku, file_buku, file_size, timestamp_buku');
         $this->db->where('file_buku !=', ''); // Hanya buku yang memiliki file
         if ($limit) {
             $this->db->limit($limit, $offset);

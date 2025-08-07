@@ -121,7 +121,10 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Layanan Bantuan</h5>
                                             <p class="card-text">Kami siap membantu Anda. Hubungi kami melalui WhatsApp untuk pertanyaan lebih lanjut.</p>
-                                            <a href="https://api.whatsapp.com/send?phone=6282183930485" target="_blank" class="btn btn-success">
+                                            <!-- <a href="https://api.whatsapp.com/send?phone=6282183930485" target="_blank" class="btn btn-success">
+                                                <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
+                                            </a> -->
+                                            <a href="https://api.whatsapp.com/send?phone=#" target="_blank" class="btn btn-success">
                                                 <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
                                             </a>
                                         </div>

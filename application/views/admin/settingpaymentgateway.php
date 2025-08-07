@@ -35,8 +35,11 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header ">
-                                        <h5 class="card-title"><i class="fas far fa-home mr-1"></i> Setting Payment Gateway</h5>
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0"><i class="fas far fa-home mr-1"></i> Setting Payment Gateway</h5>
+                                            <a href="https://tripay.co.id/?ref=TP9958" target="_blank" class="btn btn-sm btn-outline-primary">Buat Akun Tripay</a>
+                                        </div>
                                     </div>
                                     <form action="<?php echo site_url('admin/sistem/settingpaymentgateway'); ?>" method="POST">
                                         <div class="card-body">

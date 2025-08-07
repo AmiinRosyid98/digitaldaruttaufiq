@@ -948,7 +948,7 @@
                                             <div class="method-info">
                                                 
                                                 <span><?= $key['nama'] ?></span><br>
-                                                <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small>
+                                                <!-- <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small> -->
                                             </div>
                                             <img src="<?= base_url() ?>upload/payment/<?= $key['logo'] ?>" alt="<?= $key['nama'] ?>">
                                             <i class="fas fa-arrow-right"></i>
@@ -964,7 +964,7 @@
                                             <div class="method-info">
                                                 
                                                 <span><?= $key['nama'] ?></span><br>
-                                                <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small>
+                                                <!-- <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small> -->
                                             </div>
                                             <img src="<?= base_url() ?>upload/payment/<?= $key['logo'] ?>" alt="<?= $key['nama'] ?>">
                                             <i class="fas fa-arrow-right"></i>
@@ -984,7 +984,7 @@
                                             <div class="method-info">
                                                 
                                                 <span><?= $key['nama'] ?></span><br>
-                                                <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small>
+                                                <!-- <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small> -->
                                             </div>
                                             <img src="<?= base_url() ?>upload/payment/<?= $key['logo'] ?>" alt="<?= $key['nama'] ?>">
                                             <i class="fas fa-arrow-right"></i>
@@ -999,7 +999,7 @@
                                             <div class="method-info">
                                                 
                                                 <span><?= $key['nama'] ?></span><br>
-                                                <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small>
+                                                <!-- <small><i>Pembayaran: Rp. <?php echo number_format($key['min'], 0, ',', '.'); ?> - Rp. <?php echo number_format($key['max'], 0, ',', '.'); ?></i></small> -->
                                             </div>
                                             <img src="<?= base_url() ?>upload/payment/<?= $key['logo'] ?>" alt="<?= $key['nama'] ?>">
                                             <i class="fas fa-arrow-right"></i>

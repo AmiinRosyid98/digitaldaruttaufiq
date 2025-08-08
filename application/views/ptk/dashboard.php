@@ -257,13 +257,16 @@
                            <div id="schoolCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                               <div class="carousel-inner">
                                  <div class="carousel-item active">
-                                    <img src="https://cdn.excode.my.id/assets/slide/slide1.jpg" class="d-block w-100">
+                                    <img src="<?= base_url() ?>assets/ptk/welcome.png" class="d-block w-100">
                                  </div>
-                                 <div class="carousel-item">
-                                    <img src="https://cdn.excode.my.id/assets/slide/slide2.png" class="d-block w-100">
+                                 <div class="carousel-item ">
+                                    <img src="<?= base_url() ?>assets/ptk/welcome.png" class="d-block w-100">
                                  </div>
-                                 <div class="carousel-item">
-                                    <img src="https://cdn.excode.my.id/assets/slide/slide3.png" class="d-block w-100">
+                                 <div class="carousel-item ">
+                                    <img src="<?= base_url() ?>assets/ptk/welcome.png" class="d-block w-100">
+                                 </div>
+                                 <div class="carousel-item ">
+                                    <img src="<?= base_url() ?>assets/ptk/welcome.png" class="d-block w-100">
                                  </div>
                               </div>
                               <button class="carousel-control-prev" type="button" data-bs-target="#schoolCarousel" data-bs-slide="prev">

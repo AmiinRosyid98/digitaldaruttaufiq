@@ -198,10 +198,15 @@
         }
 
         /* Specific icon background colors for consistency */
-        .file-icon-blue { background-color: #cfe2ff; } /* bg-blue-100 equivalent */
-        .file-icon-green { background-color: #d1e7dd; } /* bg-green-100 equivalent */
-        .file-icon-red { background-color: #f8d7da; } /* bg-red-100 equivalent */
-        .file-icon-yellow { background-color: #fff3cd; } /* bg-yellow-100 equivalent */
+        /* .file-icon-blue { background-color: #cfe2ff; } 
+        .file-icon-green { background-color: #d1e7dd; }
+        .file-icon-red { background-color: #f8d7da; } 
+        .file-icon-yellow { background-color: #fff3cd; } */
+
+        .file-icon-blue { background-color: color-mix(in srgb, var(--accent-color), transparent 90%); } 
+        .file-icon-green { background-color: color-mix(in srgb, var(--accent-color), transparent 90%); }
+        .file-icon-red { background-color: color-mix(in srgb, var(--accent-color), transparent 90%); } 
+        .file-icon-yellow { background-color: color-mix(in srgb, var(--accent-color), transparent 90%); }
         
 
         /* SVG Icon Styling */
@@ -211,10 +216,15 @@
         }
 
         /* Specific icon colors for consistency */
-        .file-icon-svg.text-blue { color: #0d6efd; } /* text-blue-600 equivalent */
-        .file-icon-svg.text-green { color: #198754; } /* text-green-600 equivalent */
-        .file-icon-svg.text-red { color: #dc3545; } /* text-red-600 equivalent */
-        .file-icon-svg.text-yellow { color: #ffc107; } /* text-yellow-600 equivalent */
+        /* .file-icon-svg.text-blue { color: #0d6efd; } 
+        .file-icon-svg.text-green { color: #198754; } 
+        .file-icon-svg.text-red { color: #dc3545; } 
+        .file-icon-svg.text-yellow { color: #ffc107; }  */
+
+        .file-icon-svg.text-blue { color: var(--accent-color); } 
+        .file-icon-svg.text-green { color: var(--accent-color); } 
+        .file-icon-svg.text-red { color: var(--accent-color); } 
+        .file-icon-svg.text-yellow { color: var(--accent-color); } 
 
 
         .file-title {
@@ -266,19 +276,31 @@
         }
 
         /* Specific button colors */
-        .btn-blue { background-color: #6c9bff; color: white; } /* Warna biru yang lebih soft */
-        .btn-blue:hover { background-color: #4a87ff; color: white; } /* Hover yang lebih gelap */
+        /* .btn-blue { background-color: #6c9bff; color: white; } 
+        .btn-blue:hover { background-color: #4a87ff; color: white; } 
 
-        .btn-green { background-color: #4caf50; color: white; } /* Warna hijau yang lebih soft */
-        .btn-green:hover { background-color: #3d8b40; color: white; } /* Hover yang lebih gelap */
+        .btn-green { background-color: #4caf50; color: white; } 
+        .btn-green:hover { background-color: #3d8b40; color: white; } 
 
-        .btn-red { background-color: #ff6b6b; color: white; } /* Warna merah yang lebih soft */
-        .btn-red:hover { background-color: #ff5252; color: white; } /* Hover yang lebih gelap */
+        .btn-red { background-color: #ff6b6b; color: white; } 
+        .btn-red:hover { background-color: #ff5252; color: white; } 
 
-        .btn-yellow { background-color: #ffd93d; color: #4e4e4e; } /* Warna kuning yang lebih soft */
-        .btn-yellow:hover { background-color: #ffd700; color: #4e4e4e; } /* Hover yang lebih gelap */
+        .btn-yellow { background-color: #ffd93d; color: #4e4e4e; } 
+        .btn-yellow:hover { background-color: #ffd700; color: #4e4e4e; }  */
 
-        /* Responsive adjustments for Bootstrap grid */
+        .btn-blue { background-color: var(--accent-color); color: white; } 
+        .btn-blue:hover { background-color: var(--accent-color); color: white; } 
+
+        .btn-green { background-color: var(--accent-color); color: white; } 
+        .btn-green:hover { background-color: var(--accent-color); color: white; } 
+
+        .btn-red { background-color: var(--accent-color); color: white; } 
+        .btn-red:hover { background-color: var(--accent-color); color: white; } 
+
+        .btn-yellow { background-color: var(--accent-color); color: #4e4e4e; } 
+        .btn-yellow:hover { background-color: var(--accent-color); color: #4e4e4e; } 
+
+        
         @media (max-width: 575.98px) { /* Small devices (phones, less than 576px) */
             .header-section h1 {
                 font-size: 2.5rem;
@@ -383,13 +405,14 @@
             font-weight: 500; /* Medium font weight */
             text-decoration: none; /* Remove underline */
             transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth transition */
-            border: 1px solid #0d6efd; /* Blue border */
-            color: #0d6efd; /* Blue text */
-            background-color: transparent; /* Transparent background */
+             /* Blue border */
+            color: var(--accent-color); /* Blue text */
+            background-color: color-mix(in srgb, var(--accent-color), transparent 90%); /* Transparent background */
+            font-weight: bold;
         }
 
         .read-more-btn:hover {
-            background-color: #6c9bff; /* Blue background on hover */
+            background-color: var(--accent-color); /* Blue background on hover */
             color: #ffffff; /* White text on hover */
         }
 
@@ -401,7 +424,7 @@
         .view-all-button {
             display: inline-flex; /* Use inline-flex for icon alignment */
             align-items: center; /* Center icon and text vertically */
-            background-color: #00a19e; /* Green background */
+            background-color: var(--accent-color); /* Green background */
             color: white; /* White text */
             padding: 0.8rem 1.8rem; /* Generous padding */
             border-radius: 0.5rem; /* Rounded corners */
@@ -412,7 +435,7 @@
         }
 
         .view-all-button:hover {
-            background-color: #00a19e; /* Darker green on hover */
+            background-color: var(--accent-color); /* Darker green on hover */
             transform: translateY(-2px); /* Slight lift on hover */
             color: white; /* Keep text white on hover */
         }
@@ -496,6 +519,15 @@
             height: 120px;
         }
     }
+
+    :root {
+        --accent-color: <?= $res->warna_dasar ?>;
+        --nav-hover-color: <?= $res->warna_dasar ?>;
+        --background-footer: <?= $res->background_footer ?>;
+    }
+    .dark-background{
+        background-color: var(--background-footer) !important;
+    }
 </style>
 
   <!-- =======================================================
@@ -570,6 +602,9 @@
           <div class="col-lg-7 order-2 order-lg-1" data-aos="fade-right" data-aos-delay="200">
             <div class="hero-content">
               <h1 class="hero-title pt-0"><?php echo $res->nama_lembaga; ?></h1>
+              <p class="text-sm">
+                <?php echo htmlspecialchars($res->alamat_lembaga, ENT_QUOTES, 'UTF-8'); ?>
+              </p>
               <p class="hero-description mb-3">
                     Layanan Sistem Informasi Sekolah dan Madrasah <br>
                     <span class="fw-bold">SISMA </span>
@@ -623,7 +658,7 @@
           <div class="col-lg-5 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="300">
             <div class="hero-visual">
               <div class="hero-image-wrapper">
-                <img src="<?= base_url() ?>assets/landingnew/assets/img/illustration/illustration-15.webp" class="img-fluid hero-image" alt="Hero Image">
+                <img src="<?= base_url() ?>assets/landing/foto/<?= $res->gambar_front ?>" class="img-fluid hero-image" alt="Hero Image">
                 <div class="floating-elements">
                   <div class="floating-card card-1">
                     <i class="bi bi-lightbulb"></i>
@@ -658,13 +693,13 @@
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
             <div class="content-wrapper">
               <div class="section-header">
-                <span class="section-badge">ABOUT OUR COMPANY</span>
-                <h2>Mewujudkan Generasi Qur’ani, Berilmu, dan Berakhlak Mulia</h2>
+                <span class="section-badge"><?= $res->nama_lembaga ?></span>
+                <h2><?php echo $res->visi; ?></h2>
               </div>
 
-              <p class="lead-text">Mendidik generasi Qur'ani yang berilmu dan berakhlak mulia, siap menghadapi tantangan zaman dengan landasan iman dan taqwa yang kokoh, serta berwawasan global.</p>
+              <p class="lead-text"><?php echo $res->misi; ?></p>
 
-              <p class="description-text">Yayasan Darut Taufiq berkomitmen untuk membentuk generasi yang beriman, berilmu, dan berakhlak mulia melalui pendidikan Al-Qur'an yang berkualitas. Kami hadir sebagai wadah pengembangan potensi anak didik dengan mengedepankan nilai-nilai Islami dan penguasaan ilmu pengetahuan.</p>
+              <p class="description-text"><?php echo $res->deskripsi_sekolah; ?></p>
 
                 <div class="stats-grid">
                     <div class="stat-item">
@@ -690,8 +725,8 @@
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
             <div class="visual-section">
               <div class="main-image-container">
-                <img src="<?= base_url() ?>assets/landingnew/assets/img/about/about-8.webp" alt="Professional team collaboration" class="img-fluid main-visual">
-                <div class="overlay-card">
+                <img src="<?= base_url() ?>assets/landing/foto/<?= $res->gambar1 ?>" alt="Professional team collaboration" class="img-fluid main-visual">
+                <!-- <div class="overlay-card">
                   <div class="card-content">
                     <h4>Quality First</h4>
                     <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.</p>
@@ -699,16 +734,16 @@
                       <i class="bi bi-award-fill"></i>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="secondary-images">
                 <div class="row g-3">
                   <div class="col-6">
-                    <img src="<?= base_url() ?>assets/landingnew/assets/img/about/about-11.webp" alt="Team meeting" class="img-fluid secondary-img">
+                    <img src="<?= base_url() ?>assets/landing/foto/<?= $res->gambar2 ?>" alt="Team meeting" class="img-fluid secondary-img">
                   </div>
                   <div class="col-6">
-                    <img src="<?= base_url() ?>assets/landingnew/assets/img/about/about-5.webp" alt="Office workspace" class="img-fluid secondary-img">
+                    <img src="<?= base_url() ?>assets/landing/foto/<?= $res->gambar3 ?>" alt="Office workspace" class="img-fluid secondary-img">
                   </div>
                 </div>
               </div>

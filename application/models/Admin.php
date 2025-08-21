@@ -56,6 +56,47 @@ class Admin extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
+    public function update_gambar_front($gambar_front)
+    {
+        $data = array(
+            'gambar_front' => $gambar_front
+        );
+
+        $this->db->update($this->_tableperusahaan, $data);
+
+        return $this->db->affected_rows() > 0;
+    }
+    public function update_gambar1($gambar1)
+    {
+        $data = array(
+            'gambar1' => $gambar1
+        );
+
+        $this->db->update($this->_tableperusahaan, $data);
+
+        return $this->db->affected_rows() > 0;
+    }
+    public function update_gambar2($gambar2)
+    {
+        $data = array(
+            'gambar2' => $gambar2
+        );
+
+        $this->db->update($this->_tableperusahaan, $data);
+
+        return $this->db->affected_rows() > 0;
+    }
+    public function update_gambar3($gambar3)
+    {
+        $data = array(
+            'gambar3' => $gambar3
+        );
+
+        $this->db->update($this->_tableperusahaan, $data);
+
+        return $this->db->affected_rows() > 0;
+    }
+
 
     public function get_metode_pembayaran()
     {

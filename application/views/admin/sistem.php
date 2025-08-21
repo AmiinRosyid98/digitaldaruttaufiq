@@ -38,7 +38,7 @@
                                     <div class="card-header ">
                                         <h5 class="card-title"><i class="fas far fa-home mr-1"></i> Identitas Lembaga</h5>
                                     </div>
-                                    <form action="<?php echo site_url('admin/sistem/updatesistem'); ?>" method="POST">
+                                    <form action="<?php echo site_url('admin/sistem/updatesistem'); ?>" method="POST"  enctype="multipart/form-data" >
                                         <div class="card-body">
                                             <style>
                                                 /* Gaya kustom untuk input agar hanya memiliki garis bawah */
@@ -158,6 +158,32 @@
                                             </div>
 
 
+                                            
+                                        </div>
+                                        <div class="card-header ">
+                                            <h5 class="card-title"><i class="fas far fa-home mr-1"></i>Visi dan Misi</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Deskripsi Sekolah</label>
+                                                    <textarea name="deskripsi_sekolah" id="deskripsi_sekolah" class="form-control" rows="3"><?php echo isset($profilsekolah['deskripsi_sekolah']) ? $profilsekolah['deskripsi_sekolah'] : ''; ?></textarea>
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Visi</label>
+                                                    <textarea name="visi" id="visi" class="form-control" rows="3"><?php echo isset($profilsekolah['visi']) ? $profilsekolah['visi'] : ''; ?></textarea>
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Misi</label>
+                                                    <textarea name="misi" id="misi" class="form-control" rows="3"><?php echo isset($profilsekolah['misi']) ? $profilsekolah['misi'] : ''; ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header ">
+                                            <h5 class="card-title"><i class="fas far fa-home mr-1"></i>Personalisasi Admin</h5>
+                                            
+                                        </div>
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-6 form-group">
                                                     <label for="menu_active" class="font-weight-normal">Menu Active</label>
@@ -176,6 +202,133 @@
                                                 <div class="col-md-6 form-group">
                                                     <label for="menu_bg" class="font-weight-normal">Menu Background</label>
                                                     <input type="text" id="menu_bg" class="form-control my-colorpicker1 colorpicker-element" data-colorpicker-id="1" data-original-title="" title="" name="bg_active" value="<?php echo isset($profilsekolah['bg_active']) ? $profilsekolah['bg_active'] : ''; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header ">
+                                            <h5 class="card-title"><i class="fas far fa-home mr-1"></i>Setting Landing Page</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Warna Dasar</label>
+                                                    <input type="text" id="warna_dasar" class="form-control my-colorpicker1 colorpicker-element" data-colorpicker-id="1" data-original-title="" title="" name="warna_dasar" value="<?php echo isset($profilsekolah['warna_dasar']) ? $profilsekolah['warna_dasar'] : ''; ?>">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Background Footer</label>
+                                                    <input type="text" id="background_footer" class="form-control my-colorpicker1 colorpicker-element" data-colorpicker-id="1" data-original-title="" title="" name="background_footer" value="<?php echo isset($profilsekolah['background_footer']) ? $profilsekolah['background_footer'] : ''; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">Gambar Depan</label>
+                                                    <div class="">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <img src="<?php echo base_url('assets/landing/foto/' . $gambar_front); ?>" alt="Gambar Depan" style="width: 110px; height: 110px;">
+                                                                <?php if ($this->session->flashdata('success')) : ?>
+                                                                    <p style="color: green;"><?php echo $this->session->flashdata('success'); ?></p>
+                                                                <?php elseif ($this->session->flashdata('error')) : ?>
+                                                                    <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="card-footer" style="display: flex; ">
+                                                        <!-- Form unggah foto profil -->
+                                                        
+                                                        <div class="form-group" style="margin-bottom: 0;">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="gambar_front" name="gambar_front">
+                                                                <label class="custom-file-label" for="gambar_front">Pilih Foto</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">About 1</label>
+                                                    <div class="">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <img src="<?php echo base_url('assets/landing/foto/' . $gambar1); ?>" alt="Gambar 1" style="width: 110px; height: 110px;">
+                                                                <?php if ($this->session->flashdata('success')) : ?>
+                                                                    <p style="color: green;"><?php echo $this->session->flashdata('success'); ?></p>
+                                                                <?php elseif ($this->session->flashdata('error')) : ?>
+                                                                    <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="card-footer" style="display: flex; ">
+                                                        <!-- Form unggah foto profil -->
+                                                        
+                                                        <div class="form-group" style="margin-bottom: 0;">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="gambar1" name="gambar1">
+                                                                <label class="custom-file-label" for="gambar1">Pilih Foto</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">About 2</label>
+                                                    <div class="">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <img src="<?php echo base_url('assets/landing/foto/' . $gambar2); ?>" alt="Gambar 2" style="width: 110px; height: 110px;">
+                                                                <?php if ($this->session->flashdata('success')) : ?>
+                                                                    <p style="color: green;"><?php echo $this->session->flashdata('success'); ?></p>
+                                                                <?php elseif ($this->session->flashdata('error')) : ?>
+                                                                    <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="card-footer" style="display: flex; ">
+                                                        <!-- Form unggah foto profil -->
+                                                        
+                                                        <div class="form-group" style="margin-bottom: 0;">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="gambar2" name="gambar2">
+                                                                <label class="custom-file-label" for="gambar2">Pilih Foto</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="menu_bg" class="font-weight-normal">About 3</label>
+                                                    <div class="">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <img src="<?php echo base_url('assets/landing/foto/' . $gambar3); ?>" alt="Gambar 3" style="width: 110px; height: 110px;">
+                                                                <?php if ($this->session->flashdata('success')) : ?>
+                                                                    <p style="color: green;<?php echo $this->session->flashdata('success'); ?></p>
+                                                                <?php elseif ($this->session->flashdata('error')) : ?>
+                                                                    <p style="color: red;<?php echo $this->session->flashdata('error'); ?></p>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="card-footer" style="display: flex; ">
+                                                        <!-- Form unggah foto profil -->
+                                                        
+                                                        <div class="form-group" style="margin-bottom: 0;">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="gambar3" name="gambar3">
+                                                                <label class="custom-file-label" for="gambar3">Pilih Foto</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -311,6 +464,8 @@
                     });
                 </script>
             <?php endif; ?>
+
+            
 
             <script>
                 // Fungsi untuk mengupdate waktu setiap detik

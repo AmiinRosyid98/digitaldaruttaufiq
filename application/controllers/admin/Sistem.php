@@ -79,6 +79,11 @@ class Sistem extends CI_Controller
         $data['logopemerintah'] = $logo_datapemerintah['logopemerintah'];
         $data['profilsekolah']  = $this->admin->get_profilsekolah_data();
         $data['tahunpelajaran'] = $this->Tahunpelajaran_Model->get_tahunpelajaran();
+        $data['gambar1'] = $logo_datapemerintah['gambar1'];
+        $data['gambar2'] = $logo_datapemerintah['gambar2'];
+        $data['gambar3'] = $logo_datapemerintah['gambar3'];
+        $data['gambar_front'] = $logo_datapemerintah['gambar_front'];
+
 
         // Ambil nilai NPSN dari data profil sekolah
         $kode_sekolah = isset($data['profilsekolah']['npsn']) ? $data['profilsekolah']['npsn'] : null;
@@ -134,6 +139,34 @@ class Sistem extends CI_Controller
             return;
         }
 
+        $ckeditor_script = '
+            <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+            <script>
+                ClassicEditor
+                    .create(document.querySelector("#visi"))
+                    .then(editor => {
+                        console.log(editor);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+                ClassicEditor
+                    .create(document.querySelector("#misi"))
+                    .then(editor => {
+                        console.log(editor);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+               
+            </script>
+        ';
+
+        $data['ckeditor_script'] = $ckeditor_script;
+        // sdadas
+
         // Kode lisensi valid, lanjutkan dengan memperbarui data perusahaan jika ada input POST
         if ($this->input->post()) {
             $profilsekolah_data = array(
@@ -153,10 +186,62 @@ class Sistem extends CI_Controller
                 'email_lembaga'         => htmlspecialchars($this->input->post('email_lembaga'), ENT_QUOTES, 'UTF-8'),
                 'website_lembaga'       => htmlspecialchars($this->input->post('website_lembaga'), ENT_QUOTES, 'UTF-8'),
                 'menu_active'           => htmlspecialchars($this->input->post('menu_active'), ENT_QUOTES, 'UTF-8'),
-                'bg_active'             => htmlspecialchars($this->input->post('bg_active'), ENT_QUOTES, 'UTF-8')
+                'bg_active'             => htmlspecialchars($this->input->post('bg_active'), ENT_QUOTES, 'UTF-8'),
+                'visi'                  => htmlspecialchars($this->input->post('visi'), ENT_QUOTES, 'UTF-8'),
+                'misi'                  => htmlspecialchars($this->input->post('misi'), ENT_QUOTES, 'UTF-8'),
+                'deskripsi_sekolah'     => htmlspecialchars($this->input->post('deskripsi_sekolah'), ENT_QUOTES, 'UTF-8'),
+                'warna_dasar'     => htmlspecialchars($this->input->post('warna_dasar'), ENT_QUOTES, 'UTF-8'),
+                'background_footer'     => htmlspecialchars($this->input->post('background_footer'), ENT_QUOTES, 'UTF-8'),
+
             );
 
             $update_result = $this->admin->update_perusahaan($profilsekolah_data);
+
+            if (isset($_FILES['gambar_front']) && $_FILES['gambar_front']['error'] === UPLOAD_ERR_OK) {
+                // echo "Ada file yang diupload: " . $_FILES['gambar_front']['name'];
+                // var_dump($this->update_gambar_front());die;
+                // sadasdsa
+                if($this->update_gambar_front()){
+                    $this->session->set_flashdata('toast_message', 'Gambar Front berhasil diperbarui');
+                }else{
+                    $this->session->set_flashdata('toast_message', 'Gambar Front gagal diperbarui');
+                }
+            } else {
+                // echo "Tidak ada file yang diupload atau terjadi error.";
+            }
+
+            if (isset($_FILES['gambar1']) && $_FILES['gambar1']['error'] === UPLOAD_ERR_OK) {
+                
+                if($this->update_gambar1()){
+                    $this->session->set_flashdata('toast_message', 'Gambar 1 berhasil diperbarui');
+                }else{
+                    $this->session->set_flashdata('toast_message', 'Gambar 1 gagal diperbarui');
+                }
+            } else {
+                // echo "Tidak ada file yang diupload atau terjadi error.";
+            }
+
+            if (isset($_FILES['gambar2']) && $_FILES['gambar2']['error'] === UPLOAD_ERR_OK) {
+                
+                if($this->update_gambar2()){
+                    $this->session->set_flashdata('toast_message', 'Gambar 2 berhasil diperbarui');
+                }else{
+                    $this->session->set_flashdata('toast_message', 'Gambar 2 gagal diperbarui');
+                }
+            } else {
+                // echo "Tidak ada file yang diupload atau terjadi error.";
+            }
+
+            if (isset($_FILES['gambar3']) && $_FILES['gambar3']['error'] === UPLOAD_ERR_OK) {
+                
+                if($this->update_gambar3()){
+                    $this->session->set_flashdata('toast_message', 'Gambar 3 berhasil diperbarui');
+                }else{
+                    $this->session->set_flashdata('toast_message', 'Gambar 3 gagal diperbarui');
+                }
+            } else {
+                // echo "Tidak ada file yang diupload atau terjadi error.";
+            }
 
             // Set flashdata berdasarkan hasil update
             if ($update_result) {
@@ -168,6 +253,7 @@ class Sistem extends CI_Controller
             // Redirect kembali ke halaman yang sama
             redirect('admin/sistem/updatesistem');
         }
+        
 
         // Load view jika tidak ada input POST atau setelah validasi lisensi
         $this->load->view('admin/sistem', $data);
@@ -225,6 +311,126 @@ class Sistem extends CI_Controller
             $error = $this->upload->display_errors();
             $this->session->set_flashdata('error', $error);
             redirect('admin/sistem/updatesistem');
+        }
+    }
+
+    public function update_gambar_front()
+    {
+        // Tentukan direktori untuk menyimpan logo
+        $upload_path = './assets/landing/foto/';
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['max_size'] = 2048;
+        $config['file_name'] = '_' . $_FILES['gambar_front']['name']; // Nama file dengan format ID_pengguna_nama_file
+        $this->upload->initialize($config);
+        // var_dump("tes");die;
+        // Lakukan proses upload
+        if ($this->upload->do_upload('gambar_front')) {
+            $upload_data = $this->upload->data();
+
+            // Simpan nama file ke dalam database
+            $this->admin->update_gambar_front($config['file_name']);
+            return true;
+            // Redirect ke halaman profil atau tampilkan pesan sukses
+            $this->session->set_flashdata('success', 'logo berhasil diperbarui.');
+            redirect('admin/sistem/updatesistem');
+            
+        } else {
+            return false;
+            $error = $this->upload->display_errors();
+            $this->session->set_flashdata('error', $error);
+            redirect('admin/sistem/updatesistem');
+            
+        }
+    }
+
+    public function update_gambar1()
+    {
+        // Tentukan direktori untuk menyimpan logo
+        $upload_path = './assets/landing/foto/';
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['max_size'] = 2048;
+        $config['file_name'] = '_' . $_FILES['gambar1']['name']; // Nama file dengan format ID_pengguna_nama_file
+        $this->upload->initialize($config);
+        // var_dump("tes");die;
+        // Lakukan proses upload
+        if ($this->upload->do_upload('gambar1')) {
+            $upload_data = $this->upload->data();
+
+            // Simpan nama file ke dalam database
+            $this->admin->update_gambar1($config['file_name']);
+            return true;
+            // Redirect ke halaman profil atau tampilkan pesan sukses
+            $this->session->set_flashdata('success', 'logo berhasil diperbarui.');
+            redirect('admin/sistem/updatesistem');
+            
+        } else {
+            return false;
+            $error = $this->upload->display_errors();
+            $this->session->set_flashdata('error', $error);
+            redirect('admin/sistem/updatesistem');
+            
+        }
+    }
+
+    public function update_gambar2()
+    {
+        // Tentukan direktori untuk menyimpan logo
+        $upload_path = './assets/landing/foto/';
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['max_size'] = 2048;
+        $config['file_name'] = '_' . $_FILES['gambar2']['name']; // Nama file dengan format ID_pengguna_nama_file
+        $this->upload->initialize($config);
+        // var_dump("tes");die;
+        // Lakukan proses upload
+        if ($this->upload->do_upload('gambar2')) {
+            $upload_data = $this->upload->data();
+
+            // Simpan nama file ke dalam database
+            $this->admin->update_gambar2($config['file_name']);
+            return true;
+            // Redirect ke halaman profil atau tampilkan pesan sukses
+            $this->session->set_flashdata('success', 'logo berhasil diperbarui.');
+            redirect('admin/sistem/updatesistem');
+            
+        } else {
+            return false;
+            $error = $this->upload->display_errors();
+            $this->session->set_flashdata('error', $error);
+            redirect('admin/sistem/updatesistem');
+            
+        }
+    }
+
+    public function update_gambar3()
+    {
+        // Tentukan direktori untuk menyimpan logo
+        $upload_path = './assets/landing/foto/';
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['max_size'] = 2048;
+        $config['file_name'] = '_' . $_FILES['gambar3']['name']; // Nama file dengan format ID_pengguna_nama_file
+        $this->upload->initialize($config);
+        // var_dump("tes");die;
+        // Lakukan proses upload
+        if ($this->upload->do_upload('gambar3')) {
+            $upload_data = $this->upload->data();
+
+            // Simpan nama file ke dalam database
+            $this->admin->update_gambar3($config['file_name']);
+            return true;
+            // Redirect ke halaman profil atau tampilkan pesan sukses
+            $this->session->set_flashdata('success', 'logo berhasil diperbarui.');
+            redirect('admin/sistem/updatesistem');
+            
+        } else {
+            return false;
+            $error = $this->upload->display_errors();
+            $this->session->set_flashdata('error', $error);
+            redirect('admin/sistem/updatesistem');
+            
         }
     }
 

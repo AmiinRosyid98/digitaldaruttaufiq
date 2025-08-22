@@ -275,6 +275,78 @@ class Siswa extends CI_Controller
         redirect(base_url('admin/siswa/detailsiswa/') . $siswa_id . '#dataayah');
     }
 
+    public function updatedataibu()
+    {
+        $siswa_id = $this->input->post('editSiswaId');
+        $data = array(
+            'ibu_nama'         => $this->input->post('editNamaibu'),
+            'ibu_agama'        => $this->input->post('editAgamaibu'),
+            'ibu_nik'          => $this->input->post('editNikibu'),
+            'ibu_status'       => $this->input->post('editStatusibu'),
+            'ibu_tanggallahir' => $this->input->post('editTanggallahiribu'),
+            'ibu_tempatlahir'  => $this->input->post('editTempatlahiribu'),
+            'ibu_alamat'       => $this->input->post('editAlamatibu'),
+            'ibu_desakel'      => $this->input->post('editKelurahanibu'),
+            'ibu_kecamatan'    => $this->input->post('editKecamatanibu'),
+            'ibu_kabupaten'    => $this->input->post('editKabupatenibu'),
+            'ibu_provinsi'     => $this->input->post('editProvinsiibu'),
+            'ibu_pekerjaan'    => $this->input->post('editPekerjaanibu'),
+            'ibu_penghasilan'  => $this->input->post('editPendapatanibu'),
+            'ibu_nohp'         => $this->input->post('editTelpibu')
+        );
+
+        $result = $this->Siswa_Model->update_siswa($siswa_id, $data);
+
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data Ibu Siswa berhasil diperbarui.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Ibu Siswa');
+        }
+        redirect(base_url('admin/siswa/detailsiswa/') . $siswa_id . '#dataibu');
+    }
+
+    public function updatedatalainnya()
+    {
+        $siswa_id = $this->input->post('editSiswaId');
+        
+        // Get all sibling data from the form
+        $hubunganSaudara = $this->input->post('editHubunganSaudara');
+        $namaSaudara = $this->input->post('editNamaSaudara');
+        $usiaSaudara = $this->input->post('editUsiaSaudara');
+        
+        $saudaraData = array();
+        
+        // Process each sibling's data
+        if (!empty($hubunganSaudara) && is_array($hubunganSaudara)) {
+            foreach ($hubunganSaudara as $index => $hubungan) {
+                // Skip if name is empty
+                if (empty(trim($namaSaudara[$index]))) {
+                    continue;
+                }
+                
+                $saudaraData[] = array(
+                    'hub' => $hubungan,
+                    'nama' => $namaSaudara[$index],
+                    'usia' => isset($usiaSaudara[$index]) ? $usiaSaudara[$index] : ''
+                );
+            }
+        }
+        
+        // Prepare data for update
+        $data = array(
+            'saudara' => !empty($saudaraData) ? json_encode($saudaraData) : null
+        );
+
+        $result = $this->Siswa_Model->update_siswa($siswa_id, $data);
+
+        if ($result) {
+            $this->session->set_flashdata('success_message', 'Data saudara berhasil disimpan.');
+        } else {
+            $this->session->set_flashdata('error_message', 'Gagal menyimpan data saudara');
+        }
+        redirect(base_url('admin/siswa/detailsiswa/') . $siswa_id . '#datalainnya');
+    }
+
 
 
 
@@ -297,7 +369,7 @@ class Siswa extends CI_Controller
             $this->session->set_flashdata('error_message', 'Tidak ada perubahan Data Akun Siswa');
         }
 
-        redirect(base_url('admin/siswa/detailsiswa/') . $siswa_id . '#datakelas');
+        redirect(base_url('admin/siswa/detailsiswa/') . $siswa_id . '#dataakun');
     }
 
 

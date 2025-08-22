@@ -2,7 +2,7 @@
 
 <head>
 
-    <?php $this->load->view('admin/_partials/head.php') ?>
+    <?php $this->load->view('siswa/_partials/head.php') ?>
 </head>
 
 <body>
@@ -18,17 +18,13 @@
     <body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
         <div class="wrapper">
             <!-- Navbar -->
-            <?php $this->load->view('admin/_partials/navbar.php') ?>
+            <?php $this->load->view('siswa/_partials/navbar.php') ?>
             <!-- /.navbar -->
 
 
             <aside class="main-sidebar elevation-4 sidebar-dark-<?php echo $profilsekolah['menu_active'] ?? ''; ?>" style="background-color: <?php echo $profilsekolah['bg_active'] ?? ''; ?>;">
-                <!-- Sidebar Information -->
-                <?php $this->load->view('admin/_partials/sidebar_information.php') ?>
-
-                <!-- Sidebar Menu -->
-                <?php $this->load->view('admin/_partials/sidebar_menu.php') ?>
-
+               <?php $this->load->view('siswa/_partials/sidebar_information.php') ?>
+               <?php $this->load->view('siswa/_partials/sidebar_menu.php') ?>
             </aside>
 
             <!-- ======================================================================================================= -->
@@ -59,7 +55,7 @@
                                                     <li class="list-group-item"><b>NIS</b> <b><a class="float-right text-dark"><?php echo $siswa['nis']; ?></a></b></li>
                                                     <li class="list-group-item"><b>NISN</b> <b><a class="float-right text-dark"><?php echo $siswa['nisn']; ?></a></b></li>
                                                 </ul>
-                                                <a href="<?php echo base_url('admin/siswa/cetakbukuinduk/' . $siswa['id_siswa']); ?>" class="btn btn-secondary btn-block">
+                                                <a href="<?php echo base_url('siswa/akun/cetakbukuinduk/' . $siswa['id_siswa']); ?>" class="btn btn-secondary btn-block">
                                                     <b><i class="fas fa-print mr-1"></i> Cetak Buku Induk</b>
                                                 </a>
 
@@ -103,11 +99,9 @@
                                             <div class="card-header p-2 bg-secondary">
                                                 <ul class="nav nav-pills">
                                                     <li class="nav-item mr-2"><a class="btn-warning nav-link active" href="#datadiri" data-toggle="tab">Data Diri</a></li>
-                                                    <li class="nav-item mr-2"><a class="btn-warning nav-link" href="#datakelas" data-toggle="tab">Data Kelas</a></li>
                                                     <li class="nav-item mr-2"><a class="btn-warning nav-link" href="#dataayah" data-toggle="tab">Data Ayah</a></li>
                                                     <li class="nav-item mr-2"><a class="btn-warning nav-link" href="#dataibu" data-toggle="tab">Data Ibu</a></li>
                                                     <li class="nav-item mr-2"><a class="btn-warning nav-link" href="#datalainnya" data-toggle="tab">Data Lainnya</a></li>
-                                                    <li class="nav-item mr-2"><a class="btn-warning nav-link" href="#dataakun" data-toggle="tab">Data Akun</a></li>
                                                 </ul>
                                             </div>
 
@@ -115,7 +109,7 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="datadiri">
                                                         <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedatadirisiswa') . '#datadiri'; ?>" method="post">
+                                                            <form id="formEditSiswa" action="<?php echo base_url('siswa/akun/updatedatadirisiswa') . '#datadiri'; ?>" method="post">
                                                                 <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
 
                                                                 <div class="form-group">
@@ -209,50 +203,12 @@
                                                     </div>
 
 
-                                                    <div class="tab-pane" id="datakelas">
-                                                        <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedatakelassiswa') . '#datakelas'; ?>" method="post">
-                                                                <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
-
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editTempatlahir">Kelas</label>
-                                                                        <select class="form-control" id="editKodeKelas" name="editKodeKelas" required>
-                                                                            <?php foreach ($kelas as $item_kelas) : ?>
-                                                                                <option value="<?php echo $item_kelas['no_kelas']; ?>" <?php echo ($item_kelas['no_kelas'] == $siswa['kode_kelas']) ? 'selected' : ''; ?>><?php echo $item_kelas['nama_kelas']; ?></option>
-                                                                            <?php endforeach; ?>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editNoAbsen">Nomor Absen</label>
-                                                                        <input type="text" class="form-control" id="editNoAbsen" name="editNoAbsen" value="<?php echo $siswa['no_absen']; ?>">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editNis">NIS</label>
-                                                                        <input type="text" class="form-control" id="editNis" name="editNis" value="<?php echo $siswa['nis']; ?>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editNisn">NISN</label>
-                                                                        <input type="text" class="form-control" id="editNisn" name="editNisn" value="<?php echo $siswa['nisn']; ?>">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <button type="submit" class="btn btn-warning"> <i class="fas fa-save"></i> Simpan</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
+                                                   
 
 
                                                     <div class="tab-pane" id="dataayah">
                                                         <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedataayah') . '#dataayah'; ?>" method="post">
+                                                            <form id="formEditSiswa" action="<?php echo base_url('siswa/akun/updatedataayah') . '#dataayah'; ?>" method="post">
                                                                 <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
 
                                                                 <div class="form-row">
@@ -355,7 +311,7 @@
 
                                                     <div class="tab-pane" id="dataibu">
                                                         <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedataibu') . '#dataibu'; ?>" method="post">
+                                                            <form id="formEditSiswa" action="<?php echo base_url('siswa/akun/updatedataibu') . '#dataibu'; ?>" method="post">
                                                                 <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
 
                                                                 <div class="form-row">
@@ -457,7 +413,7 @@
 
                                                     <div class="tab-pane" id="datalainnya">
                                                         <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedatalainnya') . '#datalainnya'; ?>" method="post">
+                                                            <form id="formEditSiswa" action="<?php echo base_url('siswa/akun/updatedatalainnya') . '#datalainnya'; ?>" method="post">
                                                                 <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
 
                                                                 <?php 
@@ -582,29 +538,7 @@
                                                     </div>
 
 
-                                                    <div class="tab-pane" id="dataakun">
-                                                        <div class="post">
-                                                            <form id="formEditSiswa" action="<?php echo base_url('admin/siswa/updatedataakunsiswa') . '#dataakun'; ?>" method="post">
-                                                                <input type="hidden" name="editSiswaId" value="<?php echo $siswa['id_siswa']; ?>">
-
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editUsername">Username</label>
-                                                                        <input type="text" class="form-control" id="editUsername" name="editUsername" value="<?php echo $siswa['username']; ?>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="editPassword">Password</label>
-                                                                        <input type="password" class="form-control" id="editPassword" name="editPassword" value="<?php echo $siswa['password']; ?>">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <button type="submit" class="btn btn-warning"> <i class="fas fa-save"></i> Update</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
+                                                   
 
                                                 </div>
                                             </div>
@@ -749,7 +683,7 @@
 
 
 
-        <?php $this->load->view('admin/_partials/footer.php') ?>
+        <?php $this->load->view('siswa/_partials/footer.php') ?>
 
 
 
